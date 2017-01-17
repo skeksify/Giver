@@ -1,11 +1,12 @@
 /**
  * Created by Skeksify on 12/1/14.
+ * **** 18/1/17
  */
 
 var nodemailer = require('nodemailer');
 
 
-function mail(mailOptions){
+function mail(mailOptions, cb){
     // create reusable transporter object using SMTP transport
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -19,11 +20,8 @@ function mail(mailOptions){
 
     // send mail with defined transport object
     transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            console.log(error);
-        }else{
-            console.log('Message sent: ' + info.response);
-        }
+        console.log(error || 'Message sent: ' + info.response);
+        cb(!error);
     });
 
     return 'Mailed this guy: \'' + mailOptions.to + '\'';

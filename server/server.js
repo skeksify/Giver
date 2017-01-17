@@ -1,86 +1,43 @@
-var http = require("http");
-var url = require("url");
-var mongoose = require("mongoose");
-mongoose.connect('mongodb://localhost/bendb');
-var Schema = mongoose.Schema;
-var db = mongoose.connection;
+var http = require("http"),
+    url = require("url"),
+    mongoose = require("mongoose").connect('mongodb://localhost/bendb'),
+    Schema = mongoose.Schema,
+    db = mongoose.connection,
+    express = require('express'),
+    eApp = express(),
+    session = require('express-session'),
+    bodyParser = require('body-parser');
+
+var upperDir = __dirname.substr(0, __dirname.lastIndexOf('\\'));
+
+eApp.set('port', 8888);
+eApp.use('/rj', express.static(upperDir + '/scripts'));
+eApp.use('/rs', express.static(upperDir + '/style'));
+
+eApp.use(session({secret: 'Teleki', resave: false, saveUninitialized: true}));
+eApp.set('view engine', 'html');
+
+eApp.use(bodyParser.urlencoded({ extended: true }));
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () { cl("Connection to MongoDB Established.") });
 
-function start(route) {
-    function onRequest(request, response) {
-        var pathname = url.parse(request.url).pathname;
-        var queryName = url.parse(request.url).query;
-        if(pathname=='/favicon.ico')
-            return;
-        cl("Request for " + pathname + " received.");
-        var page = route(pathname);
-        var body = '';
-        var pages = {
-            'mail': function(){
-                var mailer = require("./mailer");
-                var mailResponse = mailer.mail({
-                    from: 'Fred Foo ✔ <foo@blurdybloop.com>', // sender address
-                    to: 'ben.haran@gmail.com', // list, of, receivers
-                    subject: 'Hello ✔', // Subject line
-                    text: 'Hello world ✔', // plaintext body
-                    html: '<b>Hello world ✔</b>' // html body
-                });
-                return mailResponse;
-            },
-            'homepage': function(){
-                var schema = new Schema({
-                    name: String,
-                    age: Number,
-                    thoughts: Schema.Types.Mixed
-                });
-                var Men = mongoose.model('Men', schema);
-
-                var Ben = new Men({
-                    name: 'Ben Haran',
-                    age: 30
-                });
-                var res = Ben.save(errHandler);
-                cl('Saved BEN! Returned:');
-                cl(res);
-                return 'Ha!';
-            }
-        };
-
-        fPrepared = pages[page];
-        
-        body = typeof(fPrepared) === 'function' ? fPrepared() : "Super awesome Node.js Error";
-
-        response.writeHead(200, {"Content-Type": "text/plain"});
-        response.write(body);
-        response.end();
-    }
-
-    http.createServer(onRequest).listen(8888);
-    cl("Server has started.");
+function start(router) {
+    router(eApp);
+    http.createServer(eApp).listen(eApp.get('port'), function(){
+        cl("Express server listening on port " + eApp.get('port'));
+    })
 }
 
 exports.start = start;
 
-function pp(x){
-	ha = '';
-	for(var Key in x)
-		if(typeof(x[Key])=='string' || typeof(x[Key])=='number')
-			ha += "\r\n'"+Key+"':'"+x[Key]+"'";
-	return ha;
-}
-
-var die = function(msg){
-    if(msg)
-        console.error(msg)
+function die(msg) {
+    msg && console.error(msg);
     process.exit(1);
 }
-
-var errHandler = function (err) {
+function errHandler(err) {
     if (err) return handleError(err);
-    // saved!
-};
-
+}
 function cl(val){
     console.log(val);
 }
