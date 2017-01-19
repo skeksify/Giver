@@ -1,22 +1,55 @@
 <html>
     <head>
-        <title>Sharer</title>
+        <title>Giver</title>
         <link href="rs/style.css" rel="stylesheet" type="text/css">
         <script src="rj/jquery-3.1.1.js" type="text/javascript"></script>
         <script src="rj/scripts.js" type="text/javascript"></script>
     </head>
     <body>
-        <div>
-            <h2>Send</h2>
-        </div>
-        <div>
-            <div>
-                User: <input type="text" class="send-link-user" />
+        <div class="menu">
+            <div class="unlogged hidden">
+                <h2>Welcome</h2>
+                <span class="showSignup link">Sign Up</span>
+                |
+                <span class="showLogin link">Login</span>
+
+                <div class="signup hidden">
+                    <h3>Signup</h3>
+                    <div>
+                        Username: <input type="text" class="signup-username" />
+                    </div>
+                    <div>
+                        Password: <input type="password" class="signup-password" />
+                    </div>
+                    <div>
+                        Pass &nbsp;#2: <input type="password" class="signup-password2" />
+                    </div>
+                    <button class="signup-button">Sign Up</button>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="login hidden">
+                    <h3>Login</h3>
+                    <div>
+                        Username: <input type="text" class="login-username" />
+                    </div>
+                    <div>
+                        Password: <input type="password" class="login-password" />
+                    </div>
+                    <div>
+                        Remember Me: <input type="checkbox" class="login-rm" >
+                    </div>
+                    <button class="login-button">Login</button>
+                    <div class="error-message"></div>
+                </div>
             </div>
-            <div>
-                Link: <input type="text" class="send-link-link" />
+            <div class="logged hidden">
+                <h2>Welcome <span class="username"></span></h2>
+                <span class="signout link">Sign Out</span>
             </div>
-            <button class="send-link-button">Send</button>
         </div>
+    <script>
+        var initParamsStr = '<%=initParams%>';
+    </script>
     </body>
 </html>

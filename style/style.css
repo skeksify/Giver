@@ -3,3 +3,12 @@ body {
     text-align: center;
     color: white;
 }
+
+.hidden {
+    display: none;
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: underline;
+}
