@@ -1,28 +1,83 @@
 /**
  * Created by Skeksify on 19/01/2017.
  */
-
-var crypto = require('crypto'),
-    moment = require('moment'),
-    mongoose = require("mongoose").connect('mongodb://localhost/Giver'),
-    Schema = mongoose.Schema,
-    db = mongoose.connection,
-    userAccounts = db.collection('userAccounts');
+var crypto, moment, mongoose, db, userAccounts, givenItems;
+crypto = require('crypto');
+moment = require('moment');
+mongoose = require("mongoose").connect('mongodb://localhost/Giver');
+db = mongoose.connection;
+userAccounts = db.collection('userAccounts');
+givenItems = db.collection('givenItems');
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() { cl("Connection to MongoDB Established.") });
 
-exports.signup = function (postData, cb) {
-    userAccounts.findOne({ username: postData.username }, function (e, o) {
+exports.give = function (req, cb) {
+    if (!"DataValid") {
+        tossError('invalid-data', cb);
+    } else {
+        var newGivenItem = {
+            from: makeId(req.session.user._id),
+            to: makeId(req.body.to_id),
+            tags: req.body.tags,
+            requires: req.body.requires,
+            message: req.body.message,
+            link: req.body.link,
+            time: moment().format('DD/MM/YYYY, HH:mm:ss'),
+            timeUnix: moment().format('x')
+        };
+        givenItems.insert(newGivenItem, { safe: true }, function () {
+            cl('Gave ', newGivenItem);
+            cb(null, { success: true/*, user: newUser._id */});
+        });
+    }
+}
+
+exports.getList = function (ownerId, cb) { 
+    var ownerIdObj = makeId(ownerId);
+    givenItems.aggregate([
+        { $match: { "to": ownerIdObj } },
+        {
+            $lookup: {
+                from: "userAccounts",
+                localField: "from",
+                foreignField: "_id",
+                as: "sender"
+            }
+        },
+        { $project: {
+            "message": 1,
+            "requires": 1,
+            "tags": 1,
+            "link": 1,
+            "sender._id": 1
+        }}
+    ], errOr(cb));
+}
+
+
+exports.getUsers = function (cb) {
+    userAccounts.aggregate([
+        { $project: {
+            "username": 1
+        }}
+    ], errOr(cb));
+}
+
+
+exports.signup = function (postBody, cb) {
+    userAccounts.findOne({ username: postBody.username }, function (e, o) {
         if (o) {
             tossError('username-taken', cb);
         } else {
-            var newUser = {username: postData.username};
-            newUser.password = saltAndHash(postData.password);
-            newUser.signupDate = moment().format('DD/MM/YYYY, HH:mm:ss');
-            newUser.signupDateUnix = moment().format('x');
-            newUser.active = false;
-            userAccounts.insert(newUser, {safe: true}, function () {
+            var newUser = {
+                username: postBody.username,
+                password: saltAndHash(postBody.password),
+                signupDate: moment().format('DD/MM/YYYY, HH:mm:ss'),
+                signupDateUnix: moment().format('x'),
+                active: false
+            };
+            userAccounts.insert(newUser, { safe: true }, function () {
                 cl('Added ', newUser);
                 cb(null, {success: true/*, user: newUser._id */});
             });
@@ -78,4 +133,12 @@ function validatePassword(plainPass, hashedPass, callback) {
     var salt = hashedPass.substr(0, 10);
     var validHash = salt + md5(plainPass + salt);
     callback(null, hashedPass === validHash);
+}
+function errOr(cb) {
+    return function (e, o) {
+        (e ? cl : cb)(e || o);
+    }
+}
+function makeId(idStr) {
+    return mongoose.Types.ObjectId(idStr);
 }
