@@ -1,7 +1,7 @@
 var http, url, express, eApp, session, bodyParser, cookieParser,
     upperDir = __dirname.substr(0, __dirname.lastIndexOf('\\'));
 
-cl(__dirname, upperDir, '@@@');
+cl(__dirname, '@', upperDir, '@@@');
 
 http = require("http");
 url = require("url");
@@ -25,7 +25,7 @@ function start(router) {
     router(eApp);
     http.createServer(eApp).listen(eApp.get('port'), function(){
         cl("Express server listening on port " + eApp.get('port') + '@@');
-        cl(__dirname, upperDir, '@@@');
+        cl(__dirname, '@', upperDir, '@@@');
     })
 }
 
@@ -38,6 +38,6 @@ function die(msg) {
 function errHandler(err) {
     if (err) return handleError(err);
 }
-function cl(val){
-    console.log(val);
+function cl(){
+    console.log.apply(console.log, arguments);
 }
