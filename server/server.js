@@ -1,6 +1,8 @@
 var http, url, express, eApp, session, bodyParser, cookieParser,
     upperDir = __dirname.substr(0, __dirname.lastIndexOf('\\'));
 
+cl(__dirname, upperDir, '@@@');
+
 http = require("http");
 url = require("url");
 express = require('express');
