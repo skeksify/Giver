@@ -45,6 +45,11 @@ $(function () {
             $item.find('.list-block-tags').text(list[i].tags);
             $item.find('.list-block-requires').text("< " + list[i].requires);
             $item.find('.list-block-message').text(list[i].message);
+            if (list[i].link) {
+                $item.find('.list-block-link')
+                    .text(list[i].link.substr(0, 10) + '...')
+                    .attr('href', list[i].link)
+            }
             $itemsWrapper.append($item);
         }
         $list.append($itemsWrapper);

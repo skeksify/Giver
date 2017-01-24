@@ -17,6 +17,10 @@ button, input[type=button] {
     background: #2b2b2c;
 }
 
+a {
+    color: gold;
+}
+
 input[type=text], select {
     /*color: white;
     background: #212121;*/
