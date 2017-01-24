@@ -9,7 +9,7 @@ session = require('express-session');
 bodyParser = require('body-parser');
 cookieParser = require('cookie-parser');
 
-eApp.set('port', 8888);
+eApp.set('port', process.env.PORT || 8888);
 eApp.use('/rj', express.static(upperDir + '/scripts'));
 eApp.use('/rs', express.static(upperDir + '/style'));
 
