@@ -24,7 +24,8 @@ eApp.use(bodyParser.urlencoded({ extended: true }));
 function start(router) {
     router(eApp);
     http.createServer(eApp).listen(eApp.get('port'), function(){
-        cl("Express server listening on port " + eApp.get('port'));
+        cl("Express server listening on port " + eApp.get('port') + '@@');
+        cl(__dirname, upperDir, '@@@');
     })
 }
 
