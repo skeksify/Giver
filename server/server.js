@@ -1,5 +1,6 @@
 var http, url, express, eApp, session, bodyParser, cookieParser,
-    upperDir = __dirname.substr(0, __dirname.lastIndexOf('\\'));
+    dirSlash = __dirname.lastIndexOf('\\') > -1 ? __dirname.lastIndexOf('\\') : __dirname.lastIndexOf('/'),
+    upperDir = __dirname.substr(0, dirSlash);
 
 cl(__dirname, '@', upperDir, '@@@');
 
