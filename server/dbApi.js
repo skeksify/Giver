@@ -2,7 +2,7 @@
  * Created by Skeksify on 19/01/2017.
  */
 var crypto, moment, mongoose, db, userAccounts, givenItems,
-    isLocal = false,
+    isLocal = !process.env.PORT,
     dbURI = !isLocal ? 'mongodb://main_dev:006befbc58fd8611725822895@ds129189.mlab.com:29189/giver' : 'mongodb://localhost/Giver';
 
 crypto = require('crypto');

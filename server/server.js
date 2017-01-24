@@ -2,8 +2,6 @@ var http, url, express, eApp, session, bodyParser, cookieParser,
     dirSlash = __dirname.lastIndexOf('\\') > -1 ? __dirname.lastIndexOf('\\') : __dirname.lastIndexOf('/'),
     upperDir = __dirname.substr(0, dirSlash);
 
-cl(__dirname, '@', upperDir, '@@@');
-
 http = require("http");
 url = require("url");
 express = require('express');
@@ -25,8 +23,7 @@ eApp.use(bodyParser.urlencoded({ extended: true }));
 function start(router) {
     router(eApp);
     http.createServer(eApp).listen(eApp.get('port'), function(){
-        cl("Express server listening on port " + eApp.get('port') + '@@');
-        cl(__dirname, '@', upperDir, '@@@');
+        cl("Express server listening on port " + eApp.get('port'));
     })
 }
 
