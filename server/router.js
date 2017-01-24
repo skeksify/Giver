@@ -25,8 +25,8 @@ module.exports = function (eApp) {
             dbApi.autoLogin(req.cookies.username, req.cookies.password, function (o) {
                 if (o) {
                     req.session.user = o;
+                    cl(req.session.user, req.cookies.username, 'AutoLogin');
                 }
-                cl(req.session.user, req.cookies.username, 'AutoLogin');
                 makeTemplateParams(req, function (o) {
                     res.send(compiledHomepage(o));
                 })

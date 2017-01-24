@@ -29,7 +29,7 @@ $(function () {
     }
 
     function loadUsersSelect() {
-        $users_select.html(usersObj.length ? '<option value="">Pick</option>' : '');
+        $users_select.html('<option value="">Pick</option>');
         for (var key in usersObj) {
             $users_select.append($('<option/>').val(key).text(usersObj[key]));
         }

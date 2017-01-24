@@ -1,10 +1,13 @@
 /**
  * Created by Skeksify on 19/01/2017.
  */
-var crypto, moment, mongoose, db, userAccounts, givenItems;
+var crypto, moment, mongoose, db, userAccounts, givenItems,
+    isLocal = false,
+    dbURI = !isLocal ? 'mongodb://main_dev:006befbc58fd8611725822895@ds129189.mlab.com:29189/giver' : 'mongodb://localhost/Giver';
+
 crypto = require('crypto');
 moment = require('moment');
-mongoose = require("mongoose").connect('mongodb://localhost/Giver');
+mongoose = require("mongoose").connect(dbURI);
 db = mongoose.connection;
 userAccounts = db.collection('userAccounts');
 givenItems = db.collection('givenItems');
@@ -33,10 +36,9 @@ exports.give = function (req, cb) {
     }
 }
 
-exports.getList = function (ownerId, cb) { 
-    var ownerIdObj = makeId(ownerId);
+exports.getList = function (ownerId, cb) {
     givenItems.aggregate([
-        { $match: { "to": ownerIdObj } },
+        { $match: { "to": makeId(ownerId) } },
         {
             $lookup: {
                 from: "userAccounts",
