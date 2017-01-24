@@ -1,0 +1,34 @@
+{
+  "name": "giver",
+  "version": "0.1.0",
+  "description": "Give items!",
+  "main": "server/index.js",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "moment": "^2.17.1",
+    "mongoose": "^4.7.7",
+    "nodemailer": "^2.7.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skeksify/Sharer.git"
+  },
+  "keywords": [
+    "Giver",
+    "Skeksify"
+  ],
+  "author": "Ben Haran",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skeksify/Sharer/issues"
+  },
+  "homepage": "https://github.com/skeksify/Sharer#readme"
+}
