@@ -81,7 +81,7 @@ h2 {
 .give-dialog {
     left: -50%;
     width: 224px;
-    height: 186px;
+    height: 224px;
     padding: 10px;
     background: #222;
     position: relative;
@@ -93,8 +93,17 @@ h2 {
 .give-dialog-chunk {
     margin: 4px;
 }
+
 .give-dialog-chunk-wrapper {
+    display: flex;
     padding: 5px 0;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.give-button-wrapper {
+    margin: auto;
+    padding: 10px;
 }
 
 .give-dialog-chunk-wrapper .X {
