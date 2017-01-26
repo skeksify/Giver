@@ -30,15 +30,18 @@ exports.give = function (req, cb) {
             timeUnix: moment().format('x')
         };
         givenItems.insert(newGivenItem, { safe: true }, function () {
-            cl('Gave ', newGivenItem);
             cb(null, { success: true/*, user: newUser._id */});
         });
     }
 }
 
-exports.getList = function (ownerId, cb) {
+exports.getList = function (ownerId, cb, afterTime) {
+    var match = { "to": makeId(ownerId) };
+    if (afterTime) {
+        match.timeUnix = { '$gt': afterTime };
+    }
     givenItems.aggregate([
-        { $match: { "to": makeId(ownerId) } },
+        { $match: match },
         {
             $lookup: {
                 from: "userAccounts",
@@ -52,6 +55,8 @@ exports.getList = function (ownerId, cb) {
             "requires": 1,
             "tags": 1,
             "link": 1,
+            "time": 1,
+            "timeUnix": 1,
             "sender._id": 1
         }}
     ], errOr(cb));
