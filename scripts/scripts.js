@@ -85,7 +85,7 @@ $(function () {
                 loadList(response);
                 setTimeout(function () {
                     polling();
-                }, 20000)
+                }, 2500)
             },
             error: function (e, eStr) {
                 if (eStr === "timeout") {
