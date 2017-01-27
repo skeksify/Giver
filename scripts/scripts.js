@@ -80,15 +80,19 @@ $(function () {
         $.ajax({
             method: "GET",
             url: "update",
-            timeout: 1000*60*30,
+            timeout: 1000*24,
             success: function (response) {
                 loadList(response);
                 setTimeout(function () {
                     longPolling();                    
                 }, 2000)
             },
-            error: function () {
-                cl(arguments);
+            error: function (e, eStr) {
+                if (eStr === "timeout") {
+                    setTimeout(function () {
+                        longPolling();
+                    }, 2000);
+                }
             }
         });
     }
