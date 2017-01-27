@@ -73,24 +73,24 @@ $(function () {
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
-        longPolling();
+        polling();
     }
 
-    function longPolling() {
+    function polling() {
         $.ajax({
             method: "GET",
             url: "update",
-            timeout: 1000*24,
+            //timeout: 1000*24,
             success: function (response) {
                 loadList(response);
                 setTimeout(function () {
-                    longPolling();                    
-                }, 2000)
+                    polling();
+                }, 20000)
             },
             error: function (e, eStr) {
                 if (eStr === "timeout") {
                     setTimeout(function () {
-                        longPolling();
+                        polling();
                     }, 2000);
                 }
             }

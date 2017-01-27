@@ -87,14 +87,14 @@ module.exports = function (eApp) {
 }
 
 function poll(req, res) {
-    cl('Polling')
     dbApi.getList(req.session.user._id, function (item) {
         if (item.length) {
             usersLastServedItem[req.session.user._id] = getLastEntry(item);
-            cl('Served ', item);
             res.json(item);
-        } else { // Nothing new? Recurse, soon
-            setTimeout(poll.bind(poll, req, res), 7500);
+        } else {
+            //setTimeout(poll.bind(poll, req, res), 7500);
+            // No long polling, respond empty
+            res.json([]);
         }
     }, usersLastServedItem[req.session.user._id]) // After last served
 }
