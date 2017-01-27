@@ -91,6 +91,7 @@ function poll(req, res) {
     dbApi.getList(req.session.user._id, function (item) {
         if (item.length) {
             usersLastServedItem[req.session.user._id] = getLastEntry(item);
+            cl('Served ', item);
             res.json(item);
         } else { // Nothing new? Recurse, soon
             setTimeout(poll.bind(poll, req, res), 7500);

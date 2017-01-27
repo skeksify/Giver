@@ -24,7 +24,6 @@ $(function () {
 
     if (init_params.isLogged){
         login();
-        longPolling();
     } else {
         logout();
     }
@@ -74,6 +73,7 @@ $(function () {
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
+        longPolling();
     }
 
     function longPolling() {
