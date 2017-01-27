@@ -2,6 +2,7 @@
  * Created by Skeksify on 17/01/2017.
  */
 
+var updateIntervalInt;
 
 $(function () {
     var $main = $('.main'),
@@ -73,26 +74,17 @@ $(function () {
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
-        polling();
+        updateIntervalInt = setInterval(function () {
+            updateList();
+        }, 2500);
     }
 
-    function polling() {
+    function updateList() {
         $.ajax({
             method: "GET",
             url: "update",
-            //timeout: 1000*24,
             success: function (response) {
                 loadList(response);
-                setTimeout(function () {
-                    polling();
-                }, 2500)
-            },
-            error: function (e, eStr) {
-                if (eStr === "timeout") {
-                    setTimeout(function () {
-                        polling();
-                    }, 2000);
-                }
             }
         });
     }
