@@ -4,6 +4,7 @@
         <link href="rs/style.css" rel="stylesheet" type="text/css">
         <script src="rj/jquery-3.1.1.js" type="text/javascript"></script>
         <script src="rj/scripts.js" type="text/javascript"></script>
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     </head>
     <body>
         <div class="main">
@@ -96,30 +97,49 @@
             </div>
             <template class="list-block-template">
                 <div class="list-block">
-                    <div class="list-block-chunk">
-                        <span>From: </span>
-                        <span class="list-block-from"></span>
+                  <!--   <div class="more_menu">
+                        <ul>
+                            <li></li>        
+                            <li></li>        
+                            <li></li>        
+                        </ul>
+                    </div> -->
+                    <div class="sender_info">
+                        <div class="sender_img">
+                            <img src="http://lorempixel.com/70/70/">
+                        </div>
+                        <div class="list-block-chunk list_from">
+                            <span>From: </span>
+                            <span class="list-block-from"></span>
+                        </div>
                     </div>
-                    <div class="list-block-chunk">
+                    <div class="gift_info">
+                        <div class="list-block-chunk">
+                            <!-- <span>Link: </span> -->
+                            <a class="list-block-link" target="_blank"></a>
+                        </div>
+                        <div class="list-block-chunk list_messege">
+                            <span>Message: </span>
+                            <span class="list-block-message"></span>
+                        </div>
+                        <div class="list-block-chunk list_tags">
+                            <!-- <span>Tags: </span> -->
+                            <span class="list-block-tags list_tag"></span>
+                            <span class="list-block-tags list_tag"></span>
+                        </div>
+                    </div>
+
+                    
+                    <!-- <div class="list-block-chunk">
                         <span>Time: </span>
                         <span class="list-block-time"></span>
                     </div>
-                    <div class="list-block-chunk">
-                        <span>Tags: </span>
-                        <span class="list-block-tags"></span>
-                    </div>
+                    
                     <div class="list-block-chunk">
                         <span>Requires: </span>
                         <span class="list-block-requires"></span>
                     </div>
-                    <div class="list-block-chunk">
-                        <span>Message: </span>
-                        <span class="list-block-message"></span>
-                    </div>
-                    <div class="list-block-chunk">
-                        <span>Link: </span>
-                        <a class="list-block-link" target="_blank"></a>
-                    </div>
+                     -->
                 </div>
             </template>
         </div>

@@ -45,7 +45,7 @@ $(function () {
         result.find('.list-block-message').text(item.message);
         if (item.link) {
             result.find('.list-block-link')
-                .text(item.link.substr(0, 10) + '...')
+                .text(item.link)
                 .attr('href', item.link)
         }
         return result;
