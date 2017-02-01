@@ -1,10 +1,9 @@
 body {
     margin: 0;
     color: white;
-    background: #333;
     min-height: 360px;
     text-align: center;
-    font-family: Arial;
+   font-family: 'Lato', sans-serif;
 }
 
 button, input[type=button] {
@@ -17,11 +16,6 @@ button, input[type=button] {
     border-radius: 3px;
     background: #2b2b2c;
 }
-
-a {
-    color: gold;
-}
-
 input[type=text], select {
     /*color: white;
     background: #212121;*/
@@ -39,17 +33,14 @@ select {
 }
 
 h2 {
-    font-family: monospace;
+    
 }
 
 .hidden {
     display: none;
 }
 
-.main {
-    width: 280px;
-    display: inline-block;
-}
+
 
 .link {
     cursor: pointer;
@@ -59,19 +50,6 @@ h2 {
 .menu {
     padding: 4px 0 12px;
 }
-
-.list-block {
-    margin: 5px;
-    padding: 8px;
-    border-radius: 2px;
-    display: inline-block;
-    border: 1px solid #211f20;
-}
-
-.list-block-chunk {
-    margin: 4px;
-}
-
 .give-dialog-wrapper {
     top: 92px;
     left: 50%;
@@ -113,4 +91,85 @@ h2 {
     font-size: 14px;
     padding: 4px 7px;
     position: absolute;
+}
+
+
+/*Lena's*/
+
+.main {
+    width: 400px;
+    display: inline-block;
+    background-color: #242121;
+
+}
+.more_menu{
+    
+}
+.list-block{
+    width: 90%;
+    font-size: 13px;
+    margin: 15px auto;
+    border:1px solid #FEFDF0 ;
+    display: flex;
+    color: #FEFDF0  ;
+}
+.sender_info{
+    display: inline-block;
+    flex-grow: 1;
+    min-width: 80px;
+    max-width: 80px;
+}
+/*sender*/
+
+.list_from{
+    font-size: 13px;
+    text-align: left;
+    padding: 0px 5px 5px;
+}
+.sender_img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #bebebe;
+    overflow: hidden;
+    margin: 5px;
+    border: 1px solid #FEFDF0;
+}
+.list-block-from{
+    /*font-weight: bold;*/
+}
+.gift_info{
+    display: inline-block;
+    flex-grow: 5;
+    text-align: left;
+    margin-left: 10px;
+    padding-right: 10px;
+}
+.gift_info a {
+    color: #5480A3;
+    font-size: 13px;
+    max-width: 250px;
+    padding: 5px 0;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: underline;
+}
+.list_tags{
+    margin-bottom: 10px;
+}
+.list_tag{
+    padding: 2px 5px;
+    border-radius: 15px;
+    margin: 2px 2px;
+    display: inline-block;
+    font-size: 11px;
+    background-color: #fff;
+    color: #242121;
+}
+.list_messege{
+    line-height: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
