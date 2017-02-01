@@ -2,6 +2,7 @@
  * Created by Skeksify on 17/01/2017.
  */
 
+var updateIntervalInt;
 
 $(function () {
     var $main = $('.main'),
@@ -34,25 +35,29 @@ $(function () {
             $users_select.append($('<option/>').val(key).text(usersObj[key]));
         }
     }
-    
-    function loadList() {
-        var i, list = init_params.list,
-            $itemsWrapper = $('<div/>'), $item;
+
+    function makeBlock(item) {
+        var result = $list_block_template.clone();
+        result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
+        result.find('.list-block-time').text(item.time);
+        result.find('.list-block-tags').text(item.tags);
+        result.find('.list-block-requires').text("< " + item.requires);
+        result.find('.list-block-message').text(item.message);
+        if (item.link) {
+            result.find('.list-block-link')
+                .text(item.link)
+                .attr('href', item.link)
+        }
+        return result;
+    }
+
+    function loadList(list) {
+        var i, itemsArr = [];
 
         for (i=0; i<list.length; i++) {
-            $item = $list_block_template.clone();
-            $item.find('.list-block-from').text(usersObj[list[i].sender[0]._id]);
-            $item.find('.list-block-tags').text(list[i].tags);
-            $item.find('.list-block-requires').text("< " + list[i].requires);
-            $item.find('.list-block-message').text(list[i].message);
-            if (list[i].link) {
-                $item.find('.list-block-link')
-                    .text(list[i].link.substr(0, 10) + '...')
-                    .attr('href', list[i].link)
-            }
-            $itemsWrapper.append($item);
+            itemsArr.push(makeBlock(list[i]));
         }
-        $list.append($itemsWrapper);
+        $list.prepend(itemsArr.reverse());
     }
     
     function logout() {
@@ -67,12 +72,24 @@ $(function () {
         $menu.find('.logged')._show()
             .find('.username').text(init_params.username);
         loadUsers();
-        loadList();
+        loadList(init_params.list);
         loadUsersSelect();
+        updateIntervalInt = setInterval(function () {
+            updateList();
+        }, 2500);
+    }
+
+    function updateList() {
+        $.ajax({
+            method: "GET",
+            url: "update",
+            success: function (response) {
+                loadList(response);
+            }
+        });
     }
 
     function bindEvents() {
-
         $give_dialog.find('.give-button').click(function () {
             var to = $give_dialog.find('.give-to').val(),
                 tags = $give_dialog.find('.give-tags').val(),

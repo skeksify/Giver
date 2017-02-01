@@ -1,4 +1,5 @@
-var fs, mailer, dbApi, _, cookieParser, compiledHomepage;
+var fs, mailer, dbApi, _, cookieParser, compiledHomepage,
+    usersLastServedItem = {};
 
 fs = require('fs');
 mailer = require('./mailer');
@@ -13,6 +14,7 @@ function loadIndexFile() {
 }
 
 loadIndexFile();
+
 module.exports = function (eApp) {
     eApp.get('/', function (req, res) {
         loadIndexFile(); // Load every call for DEV, take out (Asynch, might need another refresh)
@@ -33,6 +35,14 @@ module.exports = function (eApp) {
             });
         }
     });
+
+    eApp.get('/update', function (req, res) {
+        if (req.session.user) {
+            poll(req, res);
+        } else {
+            res.json({ success: false, error: 'not-logged-in' });
+        }
+    })
 
     eApp.post('/give', function (req, res) {
         if (req.session.user) {
@@ -76,12 +86,36 @@ module.exports = function (eApp) {
     })
 }
 
+function poll(req, res) {
+    dbApi.getList(req.session.user._id, function (item) {
+        if (item.length) {
+            usersLastServedItem[req.session.user._id] = getLastEntry(item);
+            res.json(item);
+        } else {
+            //setTimeout(poll.bind(poll, req, res), 7500);
+            // No long polling, respond empty
+            res.json([]);
+        }
+    }, usersLastServedItem[req.session.user._id]) // After last served
+}
+
+function getLastEntry(list) {
+    var i, result;
+    for (i = 0; i<list.length; i++) {
+        if (!result || list[i].timeUnix > result) {
+            result = list[i].timeUnix;
+        }
+    }
+    return result;
+}
+
 function makeInitParams(req, cb) {
     var initParams = { isLogged: !!req.session.user };
 
     if (initParams.isLogged) {
         initParams.username = req.session.user.username;
         dbApi.getList(req.session.user._id, function (queriedList) {
+            usersLastServedItem[req.session.user._id] = getLastEntry(queriedList);
             initParams.list = queriedList;
             dbApi.getUsers(function (queriedUsers) {
                 initParams.users = queriedUsers;
@@ -103,5 +137,7 @@ function makeTemplateParams(req, cb) {
 }
 
 function cl() {
-    console.log.apply(console.log, arguments);
+    for (var key in arguments) {
+        console.log(JSON.stringify(arguments[key], null, 2));
+    }
 }
