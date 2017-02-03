@@ -1,6 +1,7 @@
 var fs, mailer, dbApi, _, cookieParser, compiledHomepage,
-    usersLastServedItem = {};
+    usersLastServedItem = {}, http;
 
+http = require('http');
 fs = require('fs');
 mailer = require('./mailer');
 dbApi = require('./dbApi');
@@ -42,23 +43,29 @@ module.exports = function (eApp) {
         } else {
             res.json({ success: false, error: 'not-logged-in' });
         }
-    })
+    });
 
     eApp.post('/give', function (req, res) {
+        var url;
         if (req.session.user) {
-            dbApi.give(req, function (err, user) {
-                res.json(err || user);
+            url = req.body.link.match(/https?:\/\/([^\/]*)(.*)/);
+            xhr(url[1], url[2], function (urlHtml) {
+                var metaTags = extractMetadataTag(urlHtml);
+
+                dbApi.give(req, metaTags, function (err, user) {
+                    res.json(err || user);
+                })
             })
         } else {
             res.json({ success: false, error: 'not-logged-in' });
         }
-    })
+    });
 
     eApp.post('/signup', function (req, res) {
         dbApi.signup(req.body, function (err, user) {
             res.json(err || user);
         })
-    })
+    });
 
     eApp.post('/login', function (req, res) {
         dbApi.login(req.body.username, req.body.password, function (e, o) {
@@ -92,7 +99,7 @@ function poll(req, res) {
             usersLastServedItem[req.session.user._id] = getLastEntry(item);
             res.json(item);
         } else {
-            //setTimeout(poll.bind(poll, req, res), 7500);
+            // setTimeout(poll.bind(poll, req, res), 7500);
             // No long polling, respond empty
             res.json([]);
         }
@@ -134,6 +141,63 @@ function makeTemplateParams(req, cb) {
             session: req.session // Don't send all
         })        
     })
+}
+
+function xhr(host, path, cb) {
+    http.get({
+        host: host,
+        path: path
+    }, function(response) {
+        var body = [];
+        response.on('data', function(d) {
+            body.push(d);
+        });
+        response.on('end', function() {
+            cb(body.join(''));
+        });
+    }).on('error', function (e) {
+        cl('HTTP Error', e);
+        cb();
+    })
+}
+
+function cleanMarkup(html) {
+    return html
+        .toLowerCase()
+        .substr(0, html.indexOf('>', html.lastIndexOf('meta')) + 1)
+        .replace(/"/g,'\'')
+        .replace(/\n/g,' ')
+        .replace(/\s\s+/g,' ');
+}
+
+function extractMetadataTag(html) {
+    var result = {};
+
+    if (html && html.trim()) {
+        cleanMarkup(html)
+            .split('<')
+            .filter(function (tag) {
+                return tag.indexOf('meta') === 0;
+            }) // Filter only meta tags
+            .forEach(function (tag) {
+                var name = tag.match(/name\s*=\s*'([^']*)'/),
+                    property = tag.match(/property\s*=\s*'([^']*)'/),
+                    content = tag.match(/content\s*=\s*'([^']*)'/),
+                    key = name ? name[1] : (property ? property[1] : ''),
+                    val = content ? content[1] : '',
+                    catKey = key.split(':');
+
+                if (catKey.length === 2) {
+                    if (!result[catKey[0]]) {
+                        result[catKey[0]] = {};
+                    }
+                    result[catKey[0]][catKey[1]] = val;
+                } else {
+                    result[key] = val;
+                }
+            })
+    }
+    return result;
 }
 
 function cl() {

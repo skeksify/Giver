@@ -2,7 +2,7 @@
  * Created by Skeksify on 19/01/2017.
  */
 var crypto, moment, mongoose, db, userAccounts, givenItems,
-    isLocal = false,
+    isLocal = true,
     dbURI = !isLocal ? 'mongodb://main_dev:006befbc58fd8611725822895@ds129189.mlab.com:29189/giver' : 'mongodb://localhost/Giver';
 
 crypto = require('crypto');
@@ -15,7 +15,7 @@ givenItems = db.collection('givenItems');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() { cl("Connection to MongoDB Established.") });
 
-exports.give = function (req, cb) {
+exports.give = function (req, meta, cb) {
     if (!"DataValid") {
         tossError('invalid-data', cb);
     } else {
@@ -29,6 +29,8 @@ exports.give = function (req, cb) {
             time: moment().format('DD/MM/YYYY, HH:mm:ss'),
             timeUnix: moment().format('x')
         };
+        !!meta && (newGivenItem.metaTags = meta);
+        
         givenItems.insert(newGivenItem, { safe: true }, function () {
             cb(null, { success: true/*, user: newUser._id */});
         });

@@ -76,7 +76,32 @@ $(function () {
         loadUsersSelect();
         updateIntervalInt = setInterval(function () {
             updateList();
-        }, 2500);
+        }, 7500);
+    }
+
+    function tryToLogin() {
+        var un = $login.find('.login-username').val(),
+            pss = $login.find('.login-password').val(),
+            data = { username: un, password: pss, rm: $login.find('.login-rm').is(':checked') };
+
+        $login_error.text('');
+        if (!un || !pss) {
+            $login_error.text('All fields necessary');
+        } else {
+            $.ajax({
+                method: "POST",
+                url: "login",
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        init_params = response.initParams;
+                        login();
+                    } else {
+                        $login_error.text(response.error);
+                    }
+                }
+            });
+        }
     }
 
     function updateList() {
@@ -121,15 +146,15 @@ $(function () {
                 });
             }
         });
+        $give_dialog_wrapper.find('.X').click(function () {
+            $give_dialog_wrapper._hide();
+        })
         $menu.find('.menu-give').click(function () {
             $give_dialog_wrapper
                 ._show()
                 .find('input,select').val('');
 
         });
-        $give_dialog_wrapper.find('.X').click(function () {
-            $give_dialog_wrapper._hide();
-        })
         $menu.find('.menu-show-signup').click(function () {
             $signup._show();
             $login._hide();
@@ -138,30 +163,30 @@ $(function () {
             $signup._hide();
             $login._show();
         });
-        $login.find('.login-button').click(function () {
-            var un = $login.find('.login-username').val(),
-                pss = $login.find('.login-password').val(),
-                data = { username: un, password: pss, rm: $login.find('.login-rm').is(':checked') };
-
-            $login_error.text('');
-            if (!un || !pss) {
-                $login_error.text('All fields necessary');
-            } else {
-                $.ajax({
-                    method: "POST",
-                    url: "login",
-                    data: data,
-                    success: function (response) {
-                        if (response.success) {
-                            init_params = response.initParams;
-                            login();
-                        } else {
-                            $login_error.text(response.error);
-                        }
+        $menu.find('.menu-signout').click(function () {
+            $.ajax({
+                method: "GET",
+                url: "logout",
+                success: function (response) {
+                    if (response.success) {
+                        logout();
+                    } else {
+                        console.log("Ooops?")
                     }
-                });
+                }
+            });
+        });
+        $login.find('.login-username').keypress(function (e) {
+            if (e.which === 13) {
+                $login.find('.login-password').focus();
             }
         });
+        $login.find('.login-password').keypress(function (e) {
+            if (e.which === 13) {
+                tryToLogin();
+            }
+        });
+        $login.find('.login-button').click(tryToLogin);
         $signup.find('.signup-button').click(function () {
             var un = $signup.find('.signup-username').val(),
                 pss = $signup.find('.signup-password').val(),
@@ -190,19 +215,6 @@ $(function () {
                 });
             }
         });
-        $menu.find('.menu-signout').click(function () {
-            $.ajax({
-                method: "GET",
-                url: "logout",
-                success: function (response) {
-                    if (response.success) {
-                        logout();
-                    } else {
-                        console.log("Ooops?")
-                    }
-                }
-            });
-        })
     }
 
     function loadUsers() {
