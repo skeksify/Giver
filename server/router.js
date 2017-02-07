@@ -47,14 +47,20 @@ module.exports = function (eApp) {
     eApp.post('/give', function (req, res) {
         var url;
         if (req.session.user) {
-            url = req.body.link.match(/https?:\/\/([^\/]*)(.*)/);
-            xhr(url[1], url[2], function (urlHtml) {
-                var metaTags = extractMetadataTag(urlHtml);
-
+            var cb = function (metaTags) {
                 dbApi.give(req, metaTags, function (err, user) {
                     res.json(err || user);
                 })
-            })
+            }
+            url = req.body.link.match(/https?:\/\/([^\/]*)(.*)/);
+            if (url) {
+                httpRequest(url[1], url[2], function (urlHtml) {
+                    var metaTags = extractMetadataTag(urlHtml);
+                    cb(metaTags);
+                })
+            } else {
+                cb({});
+            }
         } else {
             res.json({ success: false, error: 'not-logged-in' });
         }
@@ -142,7 +148,7 @@ function makeTemplateParams(req, cb) {
     })
 }
 
-function xhr(host, path, cb) {
+function httpRequest(host, path, cb) {
     http.get({
         host: host,
         path: path

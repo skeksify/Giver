@@ -52,11 +52,10 @@ $(function () {
         img && result.find('img').attr('src', img);
 
         if (timeObj) {
-            result.find('.list-block-time').text(timeObj.str);
+            result.find('.list-block-time').attr('title', item.time).text(timeObj.str);
             setInterval(function () {
                 result.find('.list-block-time').text(smartTime(item.timeUnix).str);
             }, timeObj.ref)
-            console.log('Timer every ', timeObj.ref)
         }
 
         return result;
@@ -79,7 +78,7 @@ $(function () {
             if (unitDiff > 0) {
                 result = {
                     str: unitDiff + ' ' + strArr[i] + (unitDiff > 1 ? 's' : '') + ' ago',
-                    ref: millisecArr[i]
+                    ref: millisecArr[i] * (i === 3 ? 12 : 1)
                 }
             }
         }
@@ -189,6 +188,11 @@ $(function () {
                 ._show()
                 .find('input,select').val('');
 
+            // Dev junk data
+            // $give_dialog.find('.give-to').val('5881359eac63cb1f603c8929');
+            // $give_dialog.find('.give-tags').val((''+Math.random()).substr(2, 7));
+            // $give_dialog.find('.give-requires').val(10);
+            // $give_dialog.find('.give-message').val((''+Math.random()).substr(2, 7));
         });
         $menu.find('.menu-show-signup').click(function () {
             $signup._show();
