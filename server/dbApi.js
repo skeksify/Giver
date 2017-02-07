@@ -30,7 +30,7 @@ exports.give = function (req, meta, cb) {
             timeUnix: moment().format('x')
         };
         !!meta && (newGivenItem.metaTags = meta);
-        
+
         givenItems.insert(newGivenItem, { safe: true }, function () {
             cb(null, { success: true/*, user: newUser._id */});
         });
@@ -44,6 +44,7 @@ exports.getList = function (ownerId, cb, afterTime) {
     }
     givenItems.aggregate([
         { $match: match },
+        { $sort : { timeUnix: 1 } },
         {
             $lookup: {
                 from: "userAccounts",
@@ -59,7 +60,9 @@ exports.getList = function (ownerId, cb, afterTime) {
             "link": 1,
             "time": 1,
             "timeUnix": 1,
-            "sender._id": 1
+            "sender._id": 1,
+            "metaTags.title": 1,
+            "metaTags.og.image": 1
         }}
     ], errOr(cb));
 }

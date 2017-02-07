@@ -37,16 +37,51 @@ $(function () {
     }
 
     function makeBlock(item) {
-        var result = $list_block_template.clone();
+        var result = $list_block_template.clone(),
+            img = getImage(item),
+            timeObj = smartTime(item.timeUnix);
         result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
-        result.find('.list-block-time').text(item.time);
         result.find('.list-block-tags').text(item.tags);
         result.find('.list-block-requires').text("< " + item.requires);
         result.find('.list-block-message').text(item.message);
         if (item.link) {
             result.find('.list-block-link')
-                .text(item.link)
+                .text(getTitle(item))
                 .attr('href', item.link)
+        }
+        img && result.find('img').attr('src', img);
+
+        if (timeObj) {
+            result.find('.list-block-time').text(timeObj.str);
+            setInterval(function () {
+                result.find('.list-block-time').text(smartTime(item.timeUnix).str);
+            }, timeObj.ref)
+            console.log('Timer every ', timeObj.ref)
+        }
+
+        return result;
+    }
+
+    function getTitle(item) {
+        return (item.metaTags && item.metaTags.title) ? item.metaTags.title : item.link;
+    }
+    function getImage(item) {
+        return (item.metaTags && item.metaTags.og && item.metaTags.og.image) ? item.metaTags.og.image : '';
+    }
+    function smartTime(t) {
+        var diff = (new Date()).getTime() - (+t),
+            result, i, unitDiff,
+            millisecArr = [24*60*60*1000, 60*60*1000, 60*1000, 1000],
+            strArr = ['day', 'hour', 'minute', 'second'];
+
+        for (i = 0; i<millisecArr.length && !result; i++) {
+            unitDiff = parseInt(diff / millisecArr[i]);
+            if (unitDiff > 0) {
+                result = {
+                    str: unitDiff + ' ' + strArr[i] + (unitDiff > 1 ? 's' : '') + ' ago',
+                    ref: millisecArr[i]
+                }
+            }
         }
         return result;
     }

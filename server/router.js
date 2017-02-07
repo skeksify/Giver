@@ -28,7 +28,6 @@ module.exports = function (eApp) {
             dbApi.autoLogin(req.cookies.username, req.cookies.password, function (o) {
                 if (o) {
                     req.session.user = o;
-                    cl(req.session.user, req.cookies.username, 'AutoLogin');
                 }
                 makeTemplateParams(req, function (o) {
                     res.send(compiledHomepage(o));
@@ -170,6 +169,11 @@ function cleanMarkup(html) {
         .replace(/\s\s+/g,' ');
 }
 
+function getTitle(html) {
+    var result = html.match(/<\s*title\s*>(.*)<\s*\/\s*title\s*>/);
+    return result ? (result[1] || '') : '';
+}
+
 function extractMetadataTag(html) {
     var result = {};
 
@@ -196,6 +200,7 @@ function extractMetadataTag(html) {
                     result[key] = val;
                 }
             })
+        result.title = getTitle(html);
     }
     return result;
 }
