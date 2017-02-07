@@ -1,7 +1,8 @@
 var fs, mailer, dbApi, _, cookieParser, compiledHomepage,
-    usersLastServedItem = {}, http;
+    usersLastServedItem = {}, http, https;
 
 http = require('http');
+https = require('https');
 fs = require('fs');
 mailer = require('./mailer');
 dbApi = require('./dbApi');
@@ -52,9 +53,9 @@ module.exports = function (eApp) {
                     res.json(err || user);
                 })
             }
-            url = req.body.link.match(/https?:\/\/([^\/]*)(.*)/);
+            url = req.body.link.match(/(https?):\/\/([^\/]*)(.*)/);
             if (url) {
-                httpRequest(url[1], url[2], function (urlHtml) {
+                httpRequest(url[1] === 'https', url[2], url[3], function (urlHtml) {
                     var metaTags = extractMetadataTag(urlHtml);
                     cb(metaTags);
                 })
@@ -148,10 +149,13 @@ function makeTemplateParams(req, cb) {
     })
 }
 
-function httpRequest(host, path, cb) {
-    http.get({
+function httpRequest(secure, host, path, cb) {
+    (secure ? https : http).get({
         host: host,
-        path: path
+        path: path,
+        headers: {
+            accept: '*/*'
+        }
     }, function(response) {
         var body = [];
         response.on('data', function(d) {

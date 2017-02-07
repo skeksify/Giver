@@ -110,7 +110,7 @@ $(function () {
         loadUsersSelect();
         updateIntervalInt = setInterval(function () {
             updateList();
-        }, 7500);
+        }, 10000);
     }
 
     function tryToLogin() {
