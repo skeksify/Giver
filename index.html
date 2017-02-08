@@ -7,14 +7,15 @@
         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     </head>
     <body>
+    <div class="main_wrapper">
         <div class="main">
             <div class="menu">
                 <div class="unlogged hidden">
                     <h2>Welcome</h2>
-                    <span class="menu-show-signup link">Sign Up</span>
-                    |
-                    <span class="menu-show-login link">Login</span>
-
+                    <div class="logsign">
+                        <span class="menu-show-signup link">Sign Up</span>
+                        <span class="menu-show-login link kita">Login</span>
+                    </div>
                     <div class="signup hidden">
                         <h3>Signup</h3>
                         <div>
@@ -97,27 +98,33 @@
             </div>
             <template class="list-block-template">
                 <div class="list-block">
-                  <!--   <div class="more_menu">
-                        <ul>
-                            <li></li>        
-                            <li></li>        
-                            <li></li>        
-                        </ul>
-                    </div> -->
-                    <div class="sender_info">
-                        <div class="sender_img">
-                            <img src="http://lorempixel.com/70/70/">
+                    <div class="gift_basic">
+                        <div class="block_left">
+                            <div class="link_img">
+                                <img src="http://lorempixel.com/100/60/">
+                            </div>
+                            <div class="sender_name">
+                                <span class="list-block-from"></span>
+                            </div>
                         </div>
-                        <div class="list-block-chunk list_from">
-                            <span>From: </span>
-                            <span class="list-block-from"></span>
+                        <div class="list-block-chunk block_link">
+                            <div class="link_title">
+                                <a class="list-block-link" target="_blank"></a>
+                            </div>
                         </div>
+                        <div class="list-block-chunk when_sent">
+                            <!-- <span>Time: </span> -->
+                            <span class="list-block-time"></span>
+                            <ul>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                        <!--<div class="more_btn"><img src="ri/more.png"></div>-->
                     </div>
-                    <div class="gift_info">
-                        <div class="list-block-chunk">
-                            <!-- <span>Link: </span> -->
-                            <a class="list-block-link" target="_blank"></a>
-                        </div>
+                    <div class="all_info hidden">
+
                         <div class="list-block-chunk list_messege">
                             <span>Message: </span>
                             <span class="list-block-message"></span>
@@ -127,21 +134,16 @@
                             <span class="list-block-tags list_tag"></span>
                             <span class="list-block-tags list_tag"></span>
                         </div>
+                        <div class="list-block-chunk">
+                            <span>Requires: </span>
+                            <span class="list-block-requires"></span>
+                        </div>
                     </div>
 
-                    
-                    <div class="list-block-chunk">
-                        <span class="list-block-time"></span>
-                    </div>
-                    <!--
-                    <div class="list-block-chunk">
-                        <span>Requires: </span>
-                        <span class="list-block-requires"></span>
-                    </div>
-                     -->
                 </div>
             </template>
         </div>
+    </div>
     <script>
         var initParamsStr = '<%=initParams%>';
     </script>
