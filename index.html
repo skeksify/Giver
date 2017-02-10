@@ -48,9 +48,20 @@
                 </div>
                 <div class="logged hidden">
                     <h2>Welcome <span class="username"></span></h2>
-                    <span class="menu-give link">Give</span>
+                    <span class="menu-give link">
+                        Give
+                    </span>
                     |
-                    <span class="menu-signout link">Sign Out</span>
+                    <span class="menu-signout link">
+                        Sign Out
+                    </span>
+                    <div class="menu-list-selector">
+                        <select>
+                            <option value="incoming">Incoming</option>
+                            <option value="archived">Archived</option>
+                            <option value="sent">Sent</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="list"></div>
@@ -115,11 +126,23 @@
                         <div class="list-block-chunk when_sent">
                             <!-- <span>Time: </span> -->
                             <span class="list-block-time"></span>
-                            <ul>
+                            <ul class="list-block-menu-opener">
                                 <li></li>
                                 <li></li>
                                 <li></li>
                             </ul>
+                            <div class="list-block-menu hidden">
+                                <div class="list-block-menu-archive">
+                                    Archive
+                                </div>
+                                <div class="list-block-menu-unread">
+                                    Mark as Unread
+                                </div>
+                                <div class="list-block-menu-forward">
+                                    Forward
+                                </div>
+
+                            </div>
                         </div>
                         <!--<div class="more_btn"><img src="ri/more.png"></div>-->
                     </div>

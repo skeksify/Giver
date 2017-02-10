@@ -39,7 +39,8 @@ $(function () {
     function makeBlock(item) {
         var result = $list_block_template.clone(),
             img = getImage(item),
-            timeObj = smartTime(item.timeUnix);
+            timeObj = smartTime(item.timeUnix),
+            $submenu = result.find('.list-block-menu');
         result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
         result.find('.list-block-tags').text(item.tags);
         result.find('.list-block-requires').text("< " + item.requires);
@@ -57,8 +58,30 @@ $(function () {
                 result.find('.list-block-time').text(smartTime(item.timeUnix).str);
             }, timeObj.ref)
         }
+        result.find('.list-block-menu-opener').click(function () {
+            $submenu._toggle();
+        });
+        $submenu.find('.list-block-menu-archive')
+            .addClass('hooked')
+            .click(archiveItem.bind(result, item._id))
 
         return result;
+    }
+
+    function archiveItem(id) {
+        var $item = this;
+        $.ajax({
+            method: "POST",
+            url: "archive",
+            data: { id: id },
+            success: function (response) {
+                if (response.success) {
+                    $item._hide();
+                } else {
+                    cl(response);
+                }
+            }
+        });
     }
 
     function getTitle(item) {
@@ -108,9 +131,11 @@ $(function () {
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
-        updateIntervalInt = setInterval(function () {
-            updateList();
-        }, 10000);
+        if (0) {
+            updateIntervalInt = setInterval(function () {
+                updateList();
+            }, 10000);
+        }
     }
 
     function tryToLogin() {
@@ -140,8 +165,8 @@ $(function () {
 
     function updateList() {
         $.ajax({
-            method: "GET",
-            url: "update",
+            method: 'GET',
+            url: 'poll',
             success: function (response) {
                 loadList(response);
             }
@@ -193,6 +218,17 @@ $(function () {
             // $give_dialog.find('.give-tags').val((''+Math.random()).substr(2, 7));
             // $give_dialog.find('.give-requires').val(10);
             // $give_dialog.find('.give-message').val((''+Math.random()).substr(2, 7));
+        });
+        $menu.find('.menu-list-selector select').change(function () {
+            $.ajax({
+                method: 'GET',
+                url: 'list',
+                data: 'listType=' + $(this).val(),
+                success: function (response) {
+                    $list.empty();
+                    loadList(response.initParams.list);
+                }
+            });
         });
         $menu.find('.menu-show-signup').click(function () {
             $signup._show();
@@ -277,7 +313,7 @@ $(function () {
             return $(this);
         }
         $.fn._toggle = function (flag) {
-            flag ? this._show() : this._hide();
+            (typeof(flag) === 'boolean' ? flag : $(this).hasClass('hidden')) ? this._show() : this._hide();
             return $(this);
         }
     }

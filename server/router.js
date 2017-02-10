@@ -37,9 +37,27 @@ module.exports = function (eApp) {
         }
     });
 
-    eApp.get('/update', function (req, res) {
+    eApp.get('/list', function (req, res) {
+        if (req.session.user) {
+            makeInitParams(req, function (o) {
+                res.json({success: true, initParams: o });
+            }, req.query)
+        } else {
+            res.json({ success: false, error: 'not-logged-in' });
+        }
+    });
+    
+    eApp.get('/poll', function (req, res) {
         if (req.session.user) {
             poll(req, res);
+        } else {
+            res.json({ success: false, error: 'not-logged-in' });
+        }
+    });
+    
+    eApp.post('/archive', function (req, res) {
+        if (req.session.user) {
+            archive(req, res);
         } else {
             res.json({ success: false, error: 'not-logged-in' });
         }
@@ -96,9 +114,18 @@ module.exports = function (eApp) {
             res.clearCookie('password');
             res.json({ success: true });
         });
-    })
+    });
 }
 
+function archive(req, res) {
+    var data = {
+        user: req.session.user._id,
+        item_id: req.body.id
+    }
+    dbApi.archive(data, function(result) {
+        res.json(result);
+    });
+}
 function poll(req, res) {
     dbApi.getList(req.session.user._id, function (item) {
         if (item.length) {
@@ -122,7 +149,7 @@ function getLastEntry(list) {
     return result;
 }
 
-function makeInitParams(req, cb) {
+function makeInitParams(req, cb, listSettings) {
     var initParams = { isLogged: !!req.session.user };
 
     if (initParams.isLogged) {
@@ -134,7 +161,7 @@ function makeInitParams(req, cb) {
                 initParams.users = queriedUsers;
                 cb(initParams);                
             })
-        })
+        }, null, listSettings)
     } else {
         cb(initParams);        
     }

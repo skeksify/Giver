@@ -37,11 +37,44 @@ exports.give = function (req, meta, cb) {
     }
 }
 
-exports.getList = function (ownerId, cb, afterTime) {
-    var match = { "to": makeId(ownerId) };
+exports.archive = function (data, cb) {
+    givenItems.findOne({
+            _id: makeId(data.item_id),
+            to: makeId(data.user)
+        }, function(e, o) {
+        if (o){
+            o.archived = true;
+            givenItems.save(o, { safe: true }, function(err){
+                err ? tossError(err, cb) : tossSuccess(cb);
+            });
+        } else {
+            tossError('error 4', cb);
+        }
+    });
+}
+exports.getList = function (ownerId, cb, afterTime, listSettings) {
+    var match = {
+        'to': makeId(ownerId),
+        'archived': { '$ne': true } // Not true
+    }
+    
     if (afterTime) {
         match.timeUnix = { '$gt': afterTime };
     }
+
+    if (listSettings) {
+        switch (listSettings.listType) {
+            case 'archived':
+                match.archived = true;
+                break;
+            case 'sent':
+                match.from = match.to;
+                delete match.to;
+                delete match.archived;
+                break;
+        }
+    }
+
     givenItems.aggregate([
         { $match: match },
         { $sort : { timeUnix: 1 } },
@@ -122,6 +155,10 @@ exports.autoLogin = function(username, password, cb){
 function tossError(str, cb) {
     cb({ success: false, error: str })
 }
+function tossSuccess(cb) {
+    cb({ success: true })
+}
+
 function cl() {
     console.log.apply(console.log, arguments);
 }
