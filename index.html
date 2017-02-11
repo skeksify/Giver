@@ -17,31 +17,28 @@
                     <span class="menu-show-login link kita">Login</span>
                 </div>
                 <div class="signup hidden">
-                        <input type="text" class="signup-username input_username"  placeholder="USERNAME" >
-                        <input type="password" class="signup-password input_password" placeholder="PASSWORD" >
-                        <input type="password" class="signup-password2 input_password" placeholder="PASSWORD CONFIRMATION" >
-                        <button class="signup-button">Sign Up</button>
-                        <div class="error-message"></div>
-                    </div>
+                    <input type="text" class="signup-username input_username" placeholder="USERNAME">
+                    <input type="password" class="signup-password input_password" placeholder="PASSWORD">
+                    <input type="password" class="signup-password2 input_password" placeholder="PASSWORD CONFIRMATION">
+                    <button class="signup-button">Sign Up</button>
+                    <div class="error-message"></div>
                 </div>
                 <div class="login">
-                        <input type="text" class="login-username input_username"  placeholder="USERNAME" >
-                        <input type="password" class="login-password input_password"  placeholder="PASSWORD" >
-                        <div class="rememver_me">
-                            <input type="checkbox" class="login-rm" checked="checked" >
-                            <span>REMEMBER ME</span>
-                        </div>
-                        <button class="login-button">Login</button>
-                    <div class="error-message"></div>
+                    <input type="text" class="login-username input_username" placeholder="USERNAME">
+                    <input type="password" class="login-password input_password" placeholder="PASSWORD">
+                    <div class="remember_me">
+                        <input type="checkbox" class="login-rm" checked="checked">
+                        <span>REMEMBER ME</span>
                     </div>
-
+                    <button class="login-button">Login</button>
+                    <div class="error-message"></div>
                 </div>
             </div>
             <div class="logged hidden">
                 <h2>Welcome <span class="username"></span></h2>
-                    <span class="menu-give link">Give</span>
+                <span class="menu-give link">Give</span>
                 |
-                    <span class="menu-signout link">Sign Out</span>
+                <span class="menu-signout link">Sign Out</span>
                 <div>
                     <select class="menu-list-selector">
                         <option value="incoming">Incoming</option>
@@ -112,57 +109,59 @@
                     </div>
                     <div class="list-block-chunk when_sent">
                         <!-- <span>Time: </span> -->
-                          <ul class="list-block-menu-opener">
-                              <li></li>
-                              <li></li>
-                              <li></li>
-                          </ul>
-                          <span class="list-block-time"></span>
+                        <ul class="list-block-menu-opener">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <span class="list-block-time"></span>
                     </div>
                     <div class="list-block-menu extra_menu hidden">
-                          <div class="list-block-menu-archive menu_item">
-                              Archive
-                          </div>
-                          <div class="list-block-menu-unarchive menu_item hidden">
-                              Unarchive
-                          </div>
-                          <div class="list-block-menu-unread menu_item">
-                              Mark as Unread
-                          </div>
-                          <div class="list-block-menu-read menu_item">
-                              Mark as Read
-                          </div>
-                          <div class="list-block-menu-forward menu_item">
-                              Forward
-                          </div>
+                        <div class="list-block-menu-archive menu_item">
+                            Archive
+                        </div>
+                        <div class="list-block-menu-unarchive menu_item hidden">
+                            Unarchive
+                        </div>
+                        <div class="list-block-menu-unread menu_item">
+                            Mark as Unread
+                        </div>
+                        <div class="list-block-menu-read menu_item">
+                            Mark as Read
+                        </div>
+                        <div class="list-block-menu-forward menu_item">
+                            Forward
+                        </div>
                     </div>
                     <!--<div class="more_btn"><img src="ri/more.png"></div>-->
                 </div>
                 <div class="gift_detailed hidden">
                     <div class="sender_all_info ">
-                            <img src="http://lorempixel.com/100/60/cats">
+                        <img src="http://lorempixel.com/100/60/cats">
                     </div>
-                    
+
                     <div class="list-block-chunk list_message">
-                      
+
                         <span class="list-block-message"></span>
                     </div>
                     <div class="tags_require">
-                          <div class="list-block-chunk list_tags">
-                              <!-- <span>Tags: </span> -->
-                              <span class="list-block-tags list_tag"></span>
-                              <span class="list-block-tags list_tag"></span>
-                          </div>
-                          <div class="list-block-chunk">
-                              <span>Requires: </span>
-                              <span class="list-block-requires"></span>
-                          </div>
+                        <div class="list-block-chunk list_tags">
+                            <!-- <span>Tags: </span> -->
+                            <span class="list-block-tags list_tag"></span>
+                            <span class="list-block-tags list_tag"></span>
+                        </div>
+                        <div class="list-block-chunk">
+                            <span>Requires: </span>
+                            <span class="list-block-requires"></span>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </template>
     </div>
+</div>
+</div>
 </div>
 <script>
     var initParamsStr = '<%=initParams%>';

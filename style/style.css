@@ -68,14 +68,14 @@ h2 {
 .login > input{
 
 }
-.rememver_me{
+.remember_me{
     text-align: right;
 }
-.rememver_me span{
+.remember_me span{
         font-size: 12px;
     color: #989697;
 }
-.rememver_me input{
+.remember_me input{
 
 }
 .login-button , .signup-button{
