@@ -95,7 +95,7 @@ h2 {
     display: flex;
     justify-content: space-between;
     padding: 5px;
-    width: 100%;
+    width: calc(100% - 12px);
 }
 .block_left{
     max-width: 110px;
@@ -166,11 +166,10 @@ h2 {
 
 }
 .list-block{
-    width: 100%;
+    width: calc(100% - 2px);
     font-size: 13px;
     margin: 15px auto;
     border:1px solid #FEFDF0 ;
-    display: flex;
     color: #FEFDF0  ;
     position: relative;
 }
@@ -188,13 +187,11 @@ h2 {
     padding: 0px 5px 5px;
 }
 .sender_img{
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: #bebebe;
-    overflow: hidden;
-    margin: 5px;
-    border: 1px solid #FEFDF0;
+    width: 50px;
+
+}
+.sender_img img{
+    width: 100%;
 }
 .list-block-from{
     color: #fff;
@@ -255,7 +252,6 @@ h2 {
     bottom: 0;
     right: 0;
 }
-
 .list-block-menu-opener {
     cursor: pointer;
 }
@@ -309,6 +305,28 @@ ToDo: Redesign this junk ^.^
     position: absolute;
 }
 
+
+
+.extra_menu{
+    width: 120px;
+    background-color: #fff;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0.7;
+}
+.imanu_tem{
+    color: #333;
+    font-size: 15px;
+    text-align: right;
+    line-height: 30px;
+}
+.imanu_tem:hover{
+    background-color: #242121;
+    color: #fff;
+    padding-right: 5px;
+}
 
 .hidden { /* Needs to be last to override other displays without IMPORTANT */
     display: none;
