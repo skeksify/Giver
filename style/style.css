@@ -328,15 +328,20 @@ ToDo: Redesign this junk ^.^
 */
 .gift_detailed {
     width: calc(100% - 22px);
-    margin: 10px;
+    margin: 5px;
     display: flex;
     justify-content: space-between;
 }
 .sender_all_info{
-        flex-grow: 1;
+    flex-grow: 1;
+    max-width: 90px;
+    margin-right: 10px;
 }
+.sender_all_info img{
+    width: 100%;
+    }
 .tags_require{
-    flex-grow:1;
+        max-width: 100px;
 }
 
 .hidden { /* Needs to be last to override other displays without IMPORTANT */
