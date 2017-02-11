@@ -1,233 +1,179 @@
-  <html>
-  <head>
+<html>
+<head>
     <title>Giver</title>
     <link href="rs/style.css" rel="stylesheet" type="text/css">
     <script src="rj/jquery-3.1.1.js" type="text/javascript"></script>
     <script src="rj/scripts.js" type="text/javascript"></script>
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-  </head>
-  <body>
-    <div class="main_wrapper">
-      <div class="main">
+</head>
+<body>
+<div class="main_wrapper">
+    <div class="main">
         <div class="menu">
-          <div class="unlogged hidden">
-            <h2>Welcome</h2>
-            <div class="logsign">
-              <span class="menu-show-signup link">Sign Up</span>
-              <span class="menu-show-login link kita">Login</span>
-            </div>
-            <div class="signup hidden">
-              <h3>Signup</h3>
-              <div>
-                Username: <input type="text" class="signup-username" />
-              </div>
-              <div>
-                Password: <input type="password" class="signup-password" />
-              </div>
-              <div>
-                Pass &nbsp;#2: <input type="password" class="signup-password2" />
-              </div>
-              <button class="signup-button">Sign Up</button>
-              <div class="error-message"></div>
-            </div>
-
-            <div class="login">
-              <h3>Login</h3>
-              <div>
-                Username: <input type="text" class="login-username" />
-              </div>
-              <div>
-                Password: <input type="password" class="login-password" />
-              </div>
-              <div>
-                Remember Me: <input type="checkbox" class="login-rm" checked="checked" >
-              </div>
-              <button class="login-button">Login</button>
-              <div class="error-message"></div>
-            </div>
-          </div>
-          <div class="logged hidden">
-            <h2>Welcome <span class="username"></span></h2>
-            <span class="menu-give link">Give</span>
-            |
-            <span class="menu-signout link">Sign Out</span>
-          </div>
-        </div>
-        <div class="list"></div>
-        <div class="give-dialog-wrapper hidden">
-          <div class="give-dialog">
-            Give!
-            <div class="give-dialog-chunk-wrapper">
-              <div class="give-dialog-chunk">
-                <span>To: </span>
-                <span>
-                  <select class="give-to"></select>
-                </span>
-              </div>
-              <div class="give-dialog-chunk">
-                <span>Tags: </span>
-                <span><input type="text" class="give-tags smallText"></span>
-              </div>
-              <div class="give-dialog-chunk">
-                <span>Requires: </span>
-                <span>
-                  <select class="give-requires">
-                    <option value="5">Under 5 Minutes</option>
-                    <option value="10">Under 10 Minutes</option>
-                    <option value="15">Under 15 Minutes</option>
-                    <option value="15+">Over 15 Minutes</option>
-                  </select>
-                </span>
-              </div>
-              <div class="give-dialog-chunk">
-                <span>Message: </span>
-                <span><input type="text" class="give-message smallText"></span>
-              </div>
-              <div class="give-dialog-chunk">
-                <span>Link: </span>
-                <span><input type="text" class="give-link smallText"></span>
-              </div>
-              <div class="give-dialog-chunk give-button-wrapper">
-                <button class="give-button">Give</button>
-              </div>
-
-              <div class="error-message"></div>
-              <div class="X">X</div>
-            </div>
-          </div>
-        </div>
-        <template class="list-block-template">
-          <div class="list-block">
-            <div class="gift_basic">
-              <div class="block_left">
-                <div class="link_img">
-                  <img src="http://lorempixel.com/100/60/">
+            <div class="unlogged hidden">
+                <h2>Welcome</h2>
+                <div class="logsign">
+                    <span class="menu-show-signup link">Sign Up</span>
+                    <span class="menu-show-login link kita">Login</span>
                 </div>
-                <div class="logged hidden">
-                    <h2>Welcome <span class="username"></span></h2>
+                <div class="signup hidden">
+                    <h3>Signup</h3>
+                    <div>
+                        Username: <input type="text" class="signup-username" />
+                    </div>
+                    <div>
+                        Password: <input type="password" class="signup-password" />
+                    </div>
+                    <div>
+                        Pass &nbsp;#2: <input type="password" class="signup-password2" />
+                    </div>
+                    <button class="signup-button">Sign Up</button>
+                    <div class="error-message"></div>
+                </div>
+
+                <div class="login">
+                    <h3>Login</h3>
+                    <div>
+                        Username: <input type="text" class="login-username" />
+                    </div>
+                    <div>
+                        Password: <input type="password" class="login-password" />
+                    </div>
+                    <div>
+                        Remember Me: <input type="checkbox" class="login-rm" checked="checked" >
+                    </div>
+                    <button class="login-button">Login</button>
+                    <div class="error-message"></div>
+                </div>
+            </div>
+            <div class="logged hidden">
+                <h2>Welcome <span class="username"></span></h2>
                     <span class="menu-give link">
                         Give
                     </span>
-                    |
+                |
                     <span class="menu-signout link">
                         Sign Out
                     </span>
-                    <div>
-                        <select class="menu-list-selector">
-                            <option value="incoming">Incoming</option>
-                            <option value="archived">Archived</option>
-                            <option value="sent">Sent</option>
-                        </select>
-                    </div>
-                    </div>
-                <div class="sender_name">
-                  <span class="list-block-from"></span>
+                <div>
+                    <select class="menu-list-selector">
+                        <option value="incoming">Incoming</option>
+                        <option value="archived">Archived</option>
+                        <option value="sent">Sent</option>
+                    </select>
                 </div>
-              
-              <div class="list-block-chunk block_link">
-                <div class="link_title">
-                  <a class="list-block-link" target="_blank"></a>
-                </div>
-              </div>
-              <div class="list-block-chunk when_sent">
-                <!-- <span>Time: </span> -->
-                <span class="list-block-time"></span>
-
-              </div>
-                <ul>
-                  <li></li><li></li><li></li>
-                </ul>
-                <div class="extra_menu">
-                      <div class="imanu_tem">Archive</div>
-                      <div class="imanu_tem">Remove</div>
-                      <div class="imanu_tem">Mark as read</div>
-                      <div class="imanu_tem">Forword</div>
-                </div>
-              <!--<div class="more_btn"><img src="ri/more.png"></div>-->
             </div>
-            <div class="all_info ">
-              <div class="sender_img">
-                <img src="http://lorempixel.com/100/60/cats">
-              </div>
-                  <div class="list-block-chunk list_messege">
+        </div>
+        <div class="list"></div>
+        <div class="give-dialog-wrapper hidden">
+            <div class="give-dialog">
+                Give!
+                <div class="give-dialog-chunk-wrapper">
+                    <div class="give-dialog-chunk">
+                        <span>To: </span>
+                            <span>
+                                <select class="give-to"></select>
+                            </span>
+                    </div>
+                    <div class="give-dialog-chunk">
+                        <span>Tags: </span>
+                        <span><input type="text" class="give-tags smallText"></span>
+                    </div>
+                    <div class="give-dialog-chunk">
+                        <span>Requires: </span>
+                            <span>
+                                <select class="give-requires">
+                                    <option value="5">Under 5 Minutes</option>
+                                    <option value="10">Under 10 Minutes</option>
+                                    <option value="15">Under 15 Minutes</option>
+                                    <option value="15+">Over 15 Minutes</option>
+                                </select>
+                            </span>
+                    </div>
+                    <div class="give-dialog-chunk">
+                        <span>Message: </span>
+                        <span><input type="text" class="give-message smallText"></span>
+                    </div>
+                    <div class="give-dialog-chunk">
+                        <span>Link: </span>
+                        <span><input type="text" class="give-link smallText"></span>
+                    </div>
+                    <div class="give-dialog-chunk give-button-wrapper">
+                        <button class="give-button">Give</button>
+                    </div>
+
+                    <div class="error-message"></div>
+                    <div class="X">X</div>
+                </div>
+            </div>
+        </div>
+        <template class="list-block-template">
+            <div class="list-block">
+                <div class="gift_basic">
+                    <div class="block_left">
+                        <div class="link_img">
+                            <img src="http://lorempixel.com/100/60/">
+                        </div>
+                        <div class="sender_name">
+                            <span class="list-block-from"></span>
+                        </div>
+                    </div>
+                    <div class="list-block-chunk block_link">
+                        <div class="link_title">
+                            <a class="list-block-link" target="_blank"></a>
+                        </div>
+                    </div>
+                    <div class="list-block-chunk when_sent">
+                        <!-- <span>Time: </span> -->
+                        <span class="list-block-time"></span>
+                        <ul class="list-block-menu-opener">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <div class="list-block-menu hidden">
+                            <div class="list-block-menu-archive">
+                                Archive
+                            </div>
+                            <div class="list-block-menu-unarchive hidden">
+                                Unarchive
+                            </div>
+                            <div class="list-block-menu-unread">
+                                Mark as Unread
+                            </div>
+                            <div class="list-block-menu-read">
+                                Mark as Read
+                            </div>
+                            <div class="list-block-menu-forward">
+                                Forward
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--<div class="more_btn"><img src="ri/more.png"></div>-->
+                </div>
+                <div class="gift_detailed hidden">
+                    <div class="list-block-chunk list_message">
+                        <span>Message: </span>
                         <span class="list-block-message"></span>
-                  </div>
-                  <div class="list-block-chunk list_tags">
-                    <!-- <span>Tags: </span> -->
+                    </div>
+                    <div class="list-block-chunk list_tags">
+                        <!-- <span>Tags: </span> -->
                         <span class="list-block-tags list_tag"></span>
                         <span class="list-block-tags list_tag"></span>
-                  </div>
-                  <div class="list-block-chunk">
+                    </div>
+                    <div class="list-block-chunk">
                         <span>Requires: </span>
                         <span class="list-block-requires"></span>
-                  </div>
-            </div>
-            <template class="list-block-template">
-                <div class="list-block">
-                    <div class="gift_basic">
-                        <div class="block_left">
-                            <div class="link_img">
-                                <img src="http://lorempixel.com/100/60/">
-                            </div>
-                            <div class="sender_name">
-                                <span class="list-block-from"></span>
-                            </div>
-                        </div>
-                        <div class="list-block-chunk block_link">
-                            <div class="link_title">
-                                <a class="list-block-link" target="_blank"></a>
-                            </div>
-                        </div>
-                        <div class="list-block-chunk when_sent">
-                            <!-- <span>Time: </span> -->
-                            <span class="list-block-time"></span>
-                            <ul class="list-block-menu-opener">
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
-                            <div class="list-block-menu hidden">
-                                <div class="list-block-menu-archive">
-                                    Archive
-                                </div>
-                                <div class="list-block-menu-unarchive hidden">
-                                    Unarchive
-                                </div>
-                                <div class="list-block-menu-unread">
-                                    Mark as Unread
-                                </div>
-                                <div class="list-block-menu-read">
-                                    Mark as Read
-                                </div>
-                                <div class="list-block-menu-forward">
-                                    Forward
-                                </div>
+                    </div>
+                </div>
 
-                            </div>
-                        </div>
-                        <!--<div class="more_btn"><img src="ri/more.png"></div>-->
-                    </div>
-                    <div class="gift_detailed hidden">
-                        <div class="list-block-chunk list_message">
-                            <span>Message: </span>
-                            <span class="list-block-message"></span>
-                        </div>
-                        <div class="list-block-chunk list_tags">
-                            <!-- <span>Tags: </span> -->
-                            <span class="list-block-tags list_tag"></span>
-                            <span class="list-block-tags list_tag"></span>
-                        </div>
-                        <div class="list-block-chunk">
-                            <span>Requires: </span>
-                            <span class="list-block-requires"></span>
-                        </div>
-                    </div>
-          </div>
+            </div>
         </template>
-      </div>
     </div>
-    <script>
+</div>
+<script>
     var initParamsStr = '<%=initParams%>';
-    </script>
-  </body>
-  </html>
+</script>
+</body>
+</html>
