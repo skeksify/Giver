@@ -37,20 +37,35 @@ exports.give = function (req, meta, cb) {
     }
 }
 
-exports.archive = function (data, cb) {
-    givenItems.findOne({
-            _id: makeId(data.item_id),
-            to: makeId(data.user)
-        }, function(e, o) {
+function manipulate(query, manipulation, cb) {
+    givenItems.findOne(query, function(e, o) {
         if (o){
-            o.archived = true;
+            manipulation(o);
             givenItems.save(o, { safe: true }, function(err){
                 err ? tossError(err, cb) : tossSuccess(cb);
             });
         } else {
-            tossError('error 4', cb);
+            tossError('error 44', cb);
         }
     });
+}
+
+exports.read = function (data, cb) {
+    manipulate({
+            _id: makeId(data.item_id),
+            to: makeId(data.user)
+        }, function(o) {
+            o.read = data.read;
+        }, cb);
+}
+
+exports.archive = function (data, cb) {
+    manipulate({
+        _id: makeId(data.item_id),
+        to: makeId(data.user)
+    }, function(o) {
+        o.archived = data.archived;
+    }, cb);
 }
 exports.getList = function (ownerId, cb, afterTime, listSettings) {
     var match = {
@@ -92,6 +107,7 @@ exports.getList = function (ownerId, cb, afterTime, listSettings) {
             "tags": 1,
             "link": 1,
             "time": 1,
+            "read": 1,
             "timeUnix": 1,
             "sender._id": 1,
             "metaTags.title": 1,

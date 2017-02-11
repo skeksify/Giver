@@ -232,7 +232,7 @@ h2 {
     background-color: #fff;
     color: #242121;
 }
-.list_messege{
+.list_message {
     line-height: 20px;
     font-size: 14px;
     margin-bottom: 10px;
@@ -270,7 +270,35 @@ h2 {
     cursor: pointer;
 }
 
+.list-block.unread .list-block-link {
+    font-weight: bold;
+}
 
-.hidden {
+.list-block.unread .list-block-menu-unread { /* When Unread, don't show Mark as Unread */
+    display: none;
+}
+
+.list-block:not(.unread) .list-block-menu-read { /* When Read, don't show Mark as Read */
+    display: none;
+}
+
+.list[listType=sent] .list-block-menu-unread,
+.list[listType=sent] .list-block-menu-read,
+.list[listType=sent] .list-block-menu-archive {
+    display: none;
+}
+
+.list[listType=archived] .list-block-menu-archive {
+    display: none;
+}
+
+.menu-list-selector {
+    color: #FFF;
+    margin: 23px 0 0 0;
+    background: #433434;
+}
+
+
+.hidden { /* Needs to be last to override other displays without IMPORTANT */
     display: none;
 }

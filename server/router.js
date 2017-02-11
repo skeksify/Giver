@@ -54,10 +54,18 @@ module.exports = function (eApp) {
             res.json({ success: false, error: 'not-logged-in' });
         }
     });
-    
+
     eApp.post('/archive', function (req, res) {
         if (req.session.user) {
             archive(req, res);
+        } else {
+            res.json({ success: false, error: 'not-logged-in' });
+        }
+    });
+
+    eApp.post('/read', function (req, res) {
+        if (req.session.user) {
+            read(req, res);
         } else {
             res.json({ success: false, error: 'not-logged-in' });
         }
@@ -117,10 +125,22 @@ module.exports = function (eApp) {
     });
 }
 
+function read(req, res) {
+    var data = {
+        user: req.session.user._id,
+        item_id: req.body.id,
+        read: req.body.read.is('true')
+    };
+    dbApi.read(data, function(result) {
+        res.json(result);
+    });
+}
+
 function archive(req, res) {
     var data = {
         user: req.session.user._id,
-        item_id: req.body.id
+        item_id: req.body.id,
+        archived: req.body.archived.is('true')
     }
     dbApi.archive(data, function(result) {
         res.json(result);
@@ -170,7 +190,7 @@ function makeInitParams(req, cb, listSettings) {
 function makeTemplateParams(req, cb) {
     makeInitParams(req, function (o) {
         cb({
-            initParams: JSON.stringify(o),
+            initParams: JSON.stringify(o).replace(/\'/g, '\\\''),
             session: req.session // Don't send all
         })        
     })

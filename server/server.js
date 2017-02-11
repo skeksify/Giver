@@ -39,3 +39,7 @@ function errHandler(err) {
 function cl(){
     console.log.apply(console.log, arguments);
 }
+
+String.prototype.is = function (str) {
+    return this.toLowerCase() === str.toLowerCase();
+}

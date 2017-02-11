@@ -5,7 +5,10 @@
 var updateIntervalInt;
 
 $(function () {
-    var $main = $('.main'),
+    var
+        usersObj = [],
+        currentListType = 'incoming',
+        $main = $('.main'),
         $signup = $main.find('.signup'),
         $login = $main.find('.login'),
         $menu = $main.find('.menu'),
@@ -17,7 +20,6 @@ $(function () {
         $signup_error = $signup.find('.error-message'),
         $login_error = $login.find('.error-message'),
         init_params = JSON.parse(initParamsStr || '{}'),
-        usersObj = [],
         $list_block_template = $($('template.list-block-template').remove().html());
 
     enhanceJQ();
@@ -37,43 +39,98 @@ $(function () {
     }
 
     function makeBlock(item) {
-        var result = $list_block_template.clone(),
+        var $result = $list_block_template.clone(),
             img = getImage(item),
             timeObj = smartTime(item.timeUnix),
-            $submenu = result.find('.list-block-menu');
-        result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
-        result.find('.list-block-tags').text(item.tags);
-        result.find('.list-block-requires').text("< " + item.requires);
-        result.find('.list-block-message').text(item.message);
+            $submenu = $result.find('.list-block-menu'),
+            $link = $result.find('.list-block-link');
+        $result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
+        $result.find('.list-block-tags').text(item.tags);
+        $result.find('.list-block-requires').text("< " + item.requires);
+        $result.find('.list-block-message').text(item.message);
         if (item.link) {
-            result.find('.list-block-link')
+            $link
                 .text(getTitle(item))
-                .attr('href', item.link)
+                .attr('href', item.link);
+            if (!item.read) {
+                $result.addClass('unread');
+                if (!currentListType.is('sent')) {
+                    $link
+                        .click(function () {
+                            $result.removeClass('unread');
+                            unreadItem.call($result, item._id, true);
+                        })
+                }
+            }
+
         }
-        img && result.find('img').attr('src', img);
+        img && $result.find('img').attr('src', img);
 
         if (timeObj) {
-            result.find('.list-block-time').attr('title', item.time).text(timeObj.str);
+            $result.find('.list-block-time').attr('title', item.time).text(timeObj.str);
             setInterval(function () {
-                result.find('.list-block-time').text(smartTime(item.timeUnix).str);
+                $result.find('.list-block-time').text(smartTime(item.timeUnix).str);
             }, timeObj.ref)
         }
-        result.find('.list-block-menu-opener').click(function () {
-            $submenu._toggle();
+        $result.find('.list-block-menu-opener').click(function (e) {
+            $('.list-block-menu')._hide();
+            $submenu._show();
+            e.stopPropagation(); // Don't let document.click close it
         });
         $submenu.find('.list-block-menu-archive')
             .addClass('hooked')
-            .click(archiveItem.bind(result, item._id))
+            .click(archiveItem.bind($result, item._id, true));
+        $submenu.find('.list-block-menu-unarchive')
+            .addClass('hooked')
+            .click(archiveItem.bind($result, item._id, false));
+        $submenu.find('.list-block-menu-unread')
+            .addClass('hooked')
+            .click(unreadItem.bind($result, item._id, false));
+        $submenu.find('.list-block-menu-read')
+            .addClass('hooked')
+            .click(unreadItem.bind($result, item._id, true));
+        $submenu.find('.list-block-menu-forward')
+            .addClass('hooked')
+            .click(forwardItem.bind($result, item));
 
-        return result;
+        return $result;
+    }
+    
+    function forwardItem(item) {
+        var key, classesToValues = {
+            '.give-tags': item.tags,
+            '.give-requires': item.requires,
+            '.give-message': item.message,
+            '.give-link': item.link
+        }
+        for (key in classesToValues) {
+            $give_dialog.find(key).val(classesToValues[key]);
+        }
+        $give_dialog_wrapper._show();
     }
 
-    function archiveItem(id) {
+    function unreadItem(id, markAsRead) {
+        var $block = this;
+        $.ajax({
+            method: 'POST',
+            url: 'read',
+            data: { id: id, read: !!markAsRead },
+            success: function (response) {
+                if (response.success) {
+                    $block.toggleClass('unread', !markAsRead);
+                } else {
+                    cl(response);
+                }
+            }
+        });
+    }
+
+    function archiveItem(id, markAsArchived) {
         var $item = this;
         $.ajax({
-            method: "POST",
-            url: "archive",
-            data: { id: id },
+            method: 'POST',
+            url: 'archive',
+            data: { id: id, archived: markAsArchived },
             success: function (response) {
                 if (response.success) {
                     $item._hide();
@@ -114,9 +171,14 @@ $(function () {
         for (i=0; i<list.length; i++) {
             itemsArr.push(makeBlock(list[i]));
         }
+
         $list.prepend(itemsArr.reverse());
+
+        if (currentListType.is('archived')) {
+            $list.find('.list-block-menu-unarchive')._show();
+        }
     }
-    
+
     function logout() {
         $menu.find('.logged')._hide();
         $menu.find('.unlogged')._show();
@@ -219,14 +281,19 @@ $(function () {
             // $give_dialog.find('.give-requires').val(10);
             // $give_dialog.find('.give-message').val((''+Math.random()).substr(2, 7));
         });
-        $menu.find('.menu-list-selector select').change(function () {
+        $menu.find('.menu-list-selector').change(function () {
+            currentListType = $(this).val();
             $.ajax({
                 method: 'GET',
                 url: 'list',
-                data: 'listType=' + $(this).val(),
+                data: 'listType=' + currentListType,
                 success: function (response) {
-                    $list.empty();
-                    loadList(response.initParams.list);
+                    if (response.success) {
+                        $list.attr('listType', currentListType).empty();
+                        loadList(response.initParams.list);
+                    } else {
+                        console.log(response)
+                    }
                 }
             });
         });
@@ -290,6 +357,9 @@ $(function () {
                 });
             }
         });
+        $(document).click(function () {
+            $('.list-block-menu')._hide();
+        })
     }
 
     function loadUsers() {
@@ -315,6 +385,9 @@ $(function () {
         $.fn._toggle = function (flag) {
             (typeof(flag) === 'boolean' ? flag : $(this).hasClass('hidden')) ? this._show() : this._hide();
             return $(this);
+        }
+        String.prototype.is = function (str) {
+            return this.toLowerCase() === str.toLowerCase();
         }
     }
 

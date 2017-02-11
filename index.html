@@ -55,8 +55,8 @@
                     <span class="menu-signout link">
                         Sign Out
                     </span>
-                    <div class="menu-list-selector">
-                        <select>
+                    <div>
+                        <select class="menu-list-selector">
                             <option value="incoming">Incoming</option>
                             <option value="archived">Archived</option>
                             <option value="sent">Sent</option>
@@ -135,8 +135,14 @@
                                 <div class="list-block-menu-archive">
                                     Archive
                                 </div>
+                                <div class="list-block-menu-unarchive hidden">
+                                    Unarchive
+                                </div>
                                 <div class="list-block-menu-unread">
                                     Mark as Unread
+                                </div>
+                                <div class="list-block-menu-read">
+                                    Mark as Read
                                 </div>
                                 <div class="list-block-menu-forward">
                                     Forward
@@ -147,8 +153,7 @@
                         <!--<div class="more_btn"><img src="ri/more.png"></div>-->
                     </div>
                     <div class="all_info hidden">
-
-                        <div class="list-block-chunk list_messege">
+                        <div class="list-block-chunk list_message">
                             <span>Message: </span>
                             <span class="list-block-message"></span>
                         </div>
