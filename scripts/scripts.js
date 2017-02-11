@@ -62,7 +62,6 @@ $(function () {
                         })
                 }
             }
-
         }
         img && $result.find('img').attr('src', img);
 
@@ -72,11 +71,14 @@ $(function () {
                 $result.find('.list-block-time').text(smartTime(item.timeUnix).str);
             }, timeObj.ref)
         }
-        $result.find('.list-block-menu-opener').click(function (e) {
+        $result.find('.list-block-menu-opener').hover(function (e) {
             $('.list-block-menu')._hide();
             $submenu._show();
             e.stopPropagation(); // Don't let document.click close it
         });
+        $result.find('.list-block-menu').hover(noOp, function () {
+            $submenu._hide();
+        })
         $submenu.find('.list-block-menu-archive')
             .addClass('hooked')
             .click(archiveItem.bind($result, item._id, true));
@@ -399,4 +401,6 @@ $(function () {
     function cl() {
         console.log.apply(console.log, arguments);
     }
+
+    function noOp() { }
 })
