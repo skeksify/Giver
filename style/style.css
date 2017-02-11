@@ -103,8 +103,6 @@ h2 {
 }
 .link_img{
     width: 100px;
-    margin-right: 10px;
-    margin-top: 6px;
     border: 1px solid #fff;
 }
 .link_img img{
@@ -113,7 +111,6 @@ h2 {
 }
 .block_link{
     flex-grow: 4;
-    max-width: 200px;
 }
 .block_link a {
     color: #dedede;
@@ -124,16 +121,22 @@ h2 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    max-width: 213px;
 }
 .when_sent{
     flex-grow: 2;
     font-size: 11px;
     color: #9f9f9f;
-    width: 30px;
+    width: 55px;
     text-align: right;
-    margin-left: 10px;
     white-space: nowrap;
     position: relative;
+}
+.list-block-time{
+        max-width: 55px;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
 }
 .more_btn{
     position: absolute;
@@ -233,6 +236,7 @@ h2 {
     line-height: 20px;
     font-size: 14px;
     margin-bottom: 10px;
+    flex-grow:3;
 }
 
 .gift_basic ul, .gift_basic li{
@@ -241,30 +245,42 @@ h2 {
     margin: 0;
 }
 .gift_basic li{
-    background-color: #333;
+background-color: #807e7e;
     width: 4px;
     height: 4px;
-    border-radius: 25px;
-    margin: 2px;
+    border-radius: 50px;
+    margin: 6px 0;
 }
 .gift_basic ul{
-    position: absolute;
-    bottom: 0;
-    right: 0;
+        position: absolute;
+    right: 0px;
+    bottom: 0px;
 }
 .list-block-menu-opener {
     cursor: pointer;
 }
-.list-block-menu {
-    bottom: 0;
-    left: 90px;
+.extra_menu{
+    width: 100px;
+    background-color: rgba(216, 216, 216, 0.77);
+    height: 100%;
     position: absolute;
+    right: 0;
+    top: 0;
 }
-.list-block-menu>div.hooked:hover {
-    color: white;
-    text-decoration: underline;
-    cursor: pointer;
+.menu_item{
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 13px;
+    white-space: nowrap;
+    padding-left: 2px;
+    color: #242121;
 }
+.menu_item:hover{
+    background-color: rgba(36, 33, 33, 0.75);
+    color: #fff;
+    padding-left: 5px;
+}
+
 
 .list-block.unread .list-block-link {
     font-weight: bold;
@@ -300,32 +316,16 @@ h2 {
 ToDo: Redesign this junk ^.^
 */
 .gift_detailed {
-    right: 101%;
-    width: 196px;
-    position: absolute;
+    width: calc(100% - 22px);
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
 }
-
-
-
-.extra_menu{
-    width: 120px;
-    background-color: #fff;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    opacity: 0.7;
+.sender_all_info{
+        flex-grow: 1;
 }
-.imanu_tem{
-    color: #333;
-    font-size: 15px;
-    text-align: right;
-    line-height: 30px;
-}
-.imanu_tem:hover{
-    background-color: #242121;
-    color: #fff;
-    padding-right: 5px;
+.tags_require{
+    flex-grow:1;
 }
 
 .hidden { /* Needs to be last to override other displays without IMPORTANT */

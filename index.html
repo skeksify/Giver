@@ -48,13 +48,9 @@
             </div>
             <div class="logged hidden">
                 <h2>Welcome <span class="username"></span></h2>
-                    <span class="menu-give link">
-                        Give
-                    </span>
+                    <span class="menu-give link">Give</span>
                 |
-                    <span class="menu-signout link">
-                        Sign Out
-                    </span>
+                    <span class="menu-signout link">Sign Out</span>
                 <div>
                     <select class="menu-list-selector">
                         <option value="incoming">Incoming</option>
@@ -125,46 +121,56 @@
                     </div>
                     <div class="list-block-chunk when_sent">
                         <!-- <span>Time: </span> -->
-                        <span class="list-block-time"></span>
-                        <ul class="list-block-menu-opener">
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                        <div class="list-block-menu hidden">
-                            <div class="list-block-menu-archive">
-                                Archive
-                            </div>
-                            <div class="list-block-menu-unarchive hidden">
-                                Unarchive
-                            </div>
-                            <div class="list-block-menu-unread">
-                                Mark as Unread
-                            </div>
-                            <div class="list-block-menu-read">
-                                Mark as Read
-                            </div>
-                            <div class="list-block-menu-forward">
-                                Forward
-                            </div>
-
-                        </div>
+                          <span class="list-block-time"></span>
+                          <ul class="list-block-menu-opener">
+                              <li></li>
+                              <li></li>
+                              <li></li>
+                          </ul>
+                    </div>
+                    <div class="list-block-menu extra_menu hidden">
+                          <div class="list-block-menu-archive menu_item">
+                              Archive
+                          </div>
+                          <div class="list-block-menu-unarchive menu_item hidden">
+                              Unarchive
+                          </div>
+                          <div class="list-block-menu-unread menu_item">
+                              Mark as Unread
+                          </div>
+                          <div class="list-block-menu-read menu_item">
+                              Mark as Read
+                          </div>
+                          <div class="list-block-menu-forward menu_item">
+                              Forward
+                          </div>
                     </div>
                     <!--<div class="more_btn"><img src="ri/more.png"></div>-->
                 </div>
                 <div class="gift_detailed hidden">
+                    <div class="sender_all_info ">
+                          <div class="sender_img">
+                            <img src="http://lorempixel.com/100/60/cats">
+                          </div>
+                          <div class="list-block-chunk list_messege">
+                                <span class="list-block-message"></span>
+                          </div>
+                    </div>
+                    
                     <div class="list-block-chunk list_message">
                         <span>Message: </span>
                         <span class="list-block-message"></span>
                     </div>
-                    <div class="list-block-chunk list_tags">
-                        <!-- <span>Tags: </span> -->
-                        <span class="list-block-tags list_tag"></span>
-                        <span class="list-block-tags list_tag"></span>
-                    </div>
-                    <div class="list-block-chunk">
-                        <span>Requires: </span>
-                        <span class="list-block-requires"></span>
+                    <div class="tags_require">
+                          <div class="list-block-chunk list_tags">
+                              <!-- <span>Tags: </span> -->
+                              <span class="list-block-tags list_tag"></span>
+                              <span class="list-block-tags list_tag"></span>
+                          </div>
+                          <div class="list-block-chunk">
+                              <span>Requires: </span>
+                              <span class="list-block-requires"></span>
+                          </div>
                     </div>
                 </div>
 
