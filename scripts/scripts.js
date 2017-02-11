@@ -93,6 +93,11 @@ $(function () {
             .addClass('hooked')
             .click(forwardItem.bind($result, item));
 
+        $result.hover(function () {
+            $list.find('.gift_detailed')._hide();
+            $result.find('.gift_detailed')._show();
+        })
+
         return $result;
     }
     
@@ -183,7 +188,7 @@ $(function () {
         $menu.find('.logged')._hide();
         $menu.find('.unlogged')._show();
         $give_dialog_wrapper._hide();
-        $list.html('');
+        $list.empty();
     }
 
     function login() {

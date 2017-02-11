@@ -299,6 +299,17 @@ h2 {
 }
 
 
+/*
+@Lena
+ToDo: Redesign this junk ^.^
+*/
+.gift_detailed {
+    right: 101%;
+    width: 196px;
+    position: absolute;
+}
+
+
 .hidden { /* Needs to be last to override other displays without IMPORTANT */
     display: none;
 }
