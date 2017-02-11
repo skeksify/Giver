@@ -156,7 +156,7 @@ $(function () {
         var diff = (new Date()).getTime() - (+t),
             result, i, unitDiff,
             millisecArr = [24*60*60*1000, 60*60*1000, 60*1000, 1000],
-            strArr = ['day', 'hour', 'minute', 'second'];
+            strArr = ['day', 'hour', 'min', 'second'];
 
         for (i = 0; i<millisecArr.length && !result; i++) {
             unitDiff = parseInt(diff / millisecArr[i]);
