@@ -7,7 +7,9 @@ body {
 
 
 
-
+input{
+    outline: none;
+}
 select {
     width: 120px;
 }
@@ -17,7 +19,8 @@ select {
 }
 
 h2 {
-
+    font-size: 40px;
+    margin: 10px 0;
 }
 
 .link {
@@ -86,6 +89,13 @@ h2 {
     margin-top: 20px;
     font-size: 17px;
 }
+.error-message{
+    color: red;
+    font-size: 13px;
+    margin: 8px 0;
+    font-weight: bolder;
+}
+/**/
 .give-dialog-wrapper {
     top: 92px;
     left: 50%;
