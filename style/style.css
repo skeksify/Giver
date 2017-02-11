@@ -133,10 +133,13 @@ h2 {
     position: relative;
 }
 .list-block-time{
-        max-width: 55px;
+    max-width: 55px;
     overflow: hidden;
     display: inline-block;
     text-overflow: ellipsis;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 .more_btn{
     position: absolute;
@@ -252,33 +255,41 @@ background-color: #807e7e;
     margin: 6px 0;
 }
 .gift_basic ul{
-        position: absolute;
+    position: absolute;
     right: 0px;
-    bottom: 0px;
+    top: 0px;
 }
 .list-block-menu-opener {
     cursor: pointer;
 }
 .extra_menu{
     width: 100px;
-    background-color: rgba(216, 216, 216, 0.77);
-    height: 100%;
+    background: linear-gradient(to right, rgba(208, 204, 204, 0) 7%,rgb(181, 75, 36) 22%);
+    height: calc(100% + 2px);
     position: absolute;
-    right: 0;
-    top: 0;
+    right: -1px;
+    top: -1px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 .menu_item{
-    line-height: 25px;
     font-weight: bold;
     font-size: 13px;
     white-space: nowrap;
     padding-left: 2px;
     color: #242121;
+    color: #fff;
+    flex-direction: row;
+    flex: 1;
+    line-height: 50px;
+    cursor: pointer;
 }
 .menu_item:hover{
-    background-color: rgba(36, 33, 33, 0.75);
-    color: #fff;
+    background-color: rgb(36, 33, 33);
     padding-left: 5px;
+    background: linear-gradient(to right, rgba(0,0,0,0) 50%,rgb(36, 33, 33) 93%);
 }
 
 
