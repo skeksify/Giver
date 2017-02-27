@@ -24,7 +24,7 @@
                     <div class="error-message"></div>
                 </div>
                 <div class="login">
-                    <input type="text" class="login-username input_username" placeholder="USERNAME">
+                    <input type="text" class="login-username input_username" placeholder="USERNAME" autofocus>
                     <input type="password" class="login-password input_password" placeholder="PASSWORD">
                     <div class="remember_me">
                         <input type="checkbox" class="login-rm" checked="checked">
@@ -96,7 +96,7 @@
                 <div class="gift_basic">
                     <div class="block_left">
                         <div class="link_img">
-                            <img src="http://lorempixel.com/100/60/">
+                            <img>
                         </div>
                         <div class="sender_name">
                             <span class="list-block-from"></span>
@@ -135,20 +135,17 @@
                     </div>
                     <!--<div class="more_btn"><img src="ri/more.png"></div>-->
                 </div>
-                <div class="gift_detailed hidden">
-                    <div class="sender_all_info ">
+                <div class="gift_detailed">
+                    <!--div class="sender_all_info ">
                         <img src="http://lorempixel.com/100/60/cats">
-                    </div>
-
+                    </div-->
                     <div class="list-block-chunk list_message">
-
                         <span class="list-block-message"></span>
                     </div>
                     <div class="tags_require">
-                        <div class="list-block-chunk list_tags">
+                        <div class="list-block-chunk list-block-tags-wrapper list_tags">
                             <!-- <span>Tags: </span> -->
-                            <span class="list-block-tags list_tag"></span>
-                            <span class="list-block-tags list_tag"></span>
+                            <span class="tag-item list_tag"></span>
                         </div>
                         <div class="list-block-chunk">
                             <span>Requires: </span>
@@ -156,14 +153,12 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </template>
     </div>
 </div>
-</div>
-</div>
 <script>
+    // Not for Extension //
     var initParamsStr = '<%=initParams%>';
 </script>
 </body>

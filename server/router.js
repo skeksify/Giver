@@ -147,16 +147,20 @@ function archive(req, res) {
     });
 }
 function poll(req, res) {
-    dbApi.getList(req.session.user._id, function (item) {
-        if (item.length) {
-            usersLastServedItem[req.session.user._id] = getLastEntry(item);
-            res.json(item);
-        } else {
-            // setTimeout(poll.bind(poll, req, res), 7500);
-            // No long polling, respond empty
-            res.json([]);
-        }
-    }, usersLastServedItem[req.session.user._id]) // After last served
+    if (req.session.user) {
+        dbApi.getList(req.session.user._id, function (item) {
+            if (item.length) {
+                usersLastServedItem[req.session.user._id] = getLastEntry(item);
+                res.json(item);
+            } else {
+                // setTimeout(poll.bind(poll, req, res), 7500);
+                // No long polling, respond empty
+                res.json([]);
+            }
+        }, usersLastServedItem[req.session.user._id], req.query) // After last served
+    } else {
+        res.json({ success: false, error: 'not-logged-in' });
+    }
 }
 
 function getLastEntry(list) {
@@ -174,6 +178,7 @@ function makeInitParams(req, cb, listSettings) {
 
     if (initParams.isLogged) {
         initParams.username = req.session.user.username;
+        listSettings && (initParams.listType = listSettings.listType);
         dbApi.getList(req.session.user._id, function (queriedList) {
             usersLastServedItem[req.session.user._id] = getLastEntry(queriedList);
             initParams.list = queriedList;
@@ -219,7 +224,6 @@ function httpRequest(secure, host, path, cb) {
 
 function cleanMarkup(html) {
     return html
-        .toLowerCase()
         .substr(0, html.indexOf('>', html.lastIndexOf('meta')) + 1)
         .replace(/"/g,'\'')
         .replace(/\n/g,' ')

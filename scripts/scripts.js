@@ -6,6 +6,9 @@ var updateIntervalInt;
 
 $(function () {
     var
+        isExtension = false,
+        extensionDebug = true,
+        domain = (isExtension && !extensionDebug) ? 'https://item-giver.herokuapp.com/' : '',
         usersObj = [],
         currentListType = 'incoming',
         $main = $('.main'),
@@ -19,9 +22,9 @@ $(function () {
         $users_select = $give_dialog.find('.give-to'),
         $signup_error = $signup.find('.error-message'),
         $login_error = $login.find('.error-message'),
-        init_params = JSON.parse(initParamsStr || '{}'),
+        init_params = JSON.parse((isExtension ? localStorage.getItem('init_params') : initParamsStr) || '{}'),
         $list_block_template = $($('template.list-block-template').remove().html());
-
+    
     enhanceJQ();
     bindEvents();
 
@@ -43,9 +46,11 @@ $(function () {
             img = getImage(item),
             timeObj = smartTime(item.timeUnix),
             $submenu = $result.find('.list-block-menu'),
-            $link = $result.find('.list-block-link');
+            $link = $result.find('.list-block-link'),
+            $tagsWrapper = $result.find('.list-block-tags-wrapper');
+
+        fillWithTags(item.tags, $tagsWrapper);
         $result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
-        $result.find('.list-block-tags').text(item.tags);
         $result.find('.list-block-requires').text("< " + item.requires);
         $result.find('.list-block-message').text(item.message);
         if (item.link) {
@@ -95,12 +100,33 @@ $(function () {
             .addClass('hooked')
             .click(forwardItem.bind($result, item));
 
-        $result.hover(function () {
-            $list.find('.gift_detailed')._hide();
-            $result.find('.gift_detailed')._show();
-        })
+        // $result.hover(function () {
+        //     $list.find('.gift_detailed')._hide();
+        //     $result.find('.gift_detailed')._show();
+        // })
 
         return $result;
+    }
+
+    function fillWithTags(tagsStr, $tagsWrapper) {
+        var tagsArr = tagsStr.trim().split(tagsStr.has(',') ? ',' : ' '),
+            $item = $tagsWrapper.find('.tag-item');
+
+        $tagsWrapper.empty();
+        tagsArr.forEach(function (tag) {
+            $tagsWrapper.append($item.clone().text(tag.trim()))
+        })
+    }
+
+    function htmlEncode(str) {
+        var el = document.createElement("div");
+        el.innerText = el.textContent = str;
+        return el.innerHTML;
+    }
+    function htmlDecode(str) {
+        var el = document.createElement("div");
+        el.innerHTML = str;
+        return el.innerText;
     }
     
     function forwardItem(item) {
@@ -120,7 +146,7 @@ $(function () {
         var $block = this;
         $.ajax({
             method: 'POST',
-            url: 'read',
+            url: domain + 'read',
             data: { id: id, read: !!markAsRead },
             success: function (response) {
                 if (response.success) {
@@ -136,7 +162,7 @@ $(function () {
         var $item = this;
         $.ajax({
             method: 'POST',
-            url: 'archive',
+            url: domain + 'archive',
             data: { id: id, archived: markAsArchived },
             success: function (response) {
                 if (response.success) {
@@ -149,7 +175,7 @@ $(function () {
     }
 
     function getTitle(item) {
-        return (item.metaTags && item.metaTags.title) ? item.metaTags.title : item.link;
+        return (item.metaTags && item.metaTags.title) ? htmlDecode(item.metaTags.title) : item.link;
     }
     function getImage(item) {
         return (item.metaTags && item.metaTags.og && item.metaTags.og.image) ? item.metaTags.og.image : '';
@@ -191,6 +217,10 @@ $(function () {
         $menu.find('.unlogged')._show();
         $give_dialog_wrapper._hide();
         $list.empty();
+        if (isExtension) {
+            localStorage.setItem("init_params", '');
+        }
+        updateIntervalInt && (clearInterval(updateIntervalInt) || (updateIntervalInt = 0));
     }
 
     function login() {
@@ -200,10 +230,9 @@ $(function () {
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
-        if (0) {
-            updateIntervalInt = setInterval(function () {
-                updateList();
-            }, 10000);
+        if (1 || isExtension) {
+            updateIntervalInt = setInterval(updateList, 8000);
+            updateList();
         }
     }
 
@@ -218,11 +247,12 @@ $(function () {
         } else {
             $.ajax({
                 method: "POST",
-                url: "login",
+                url: domain + "login",
                 data: data,
                 success: function (response) {
                     if (response.success) {
                         init_params = response.initParams;
+                        updateLSIfExtension();
                         login();
                     } else {
                         $login_error.text(response.error);
@@ -232,12 +262,29 @@ $(function () {
         }
     }
 
+    function updateLSIfExtension() {
+        if (isExtension) {
+            localStorage.setItem('init_params', JSON.stringify(init_params));
+        }
+    }
+
     function updateList() {
+        var type = $list.attr('listType'),
+            params = type && !type.is('incoming') ? ('?listType=' + type) : '';
         $.ajax({
             method: 'GET',
-            url: 'poll',
+            url: domain + 'poll' + params,
             success: function (response) {
-                loadList(response);
+                cl('Polled list', response);
+                if (response.constructor === Array && response.length) {
+                    init_params.list = init_params.list.concat(response);
+                    updateLSIfExtension();
+                    loadList(response);
+                } else {
+                    if (response.success === false && response.error && response.error.is('not-logged-in')) {
+                        logout();
+                    }
+                }
             }
         });
     }
@@ -262,7 +309,7 @@ $(function () {
             } else {
                 $.ajax({
                     method: "POST",
-                    url: "give",
+                    url: domain + "give",
                     data: data,
                     success: function (response) {
                         if (response.success) {
@@ -292,7 +339,7 @@ $(function () {
             currentListType = $(this).val();
             $.ajax({
                 method: 'GET',
-                url: 'list',
+                url: domain + 'list',
                 data: 'listType=' + currentListType,
                 success: function (response) {
                     if (response.success) {
@@ -315,7 +362,7 @@ $(function () {
         $menu.find('.menu-signout').click(function () {
             $.ajax({
                 method: "GET",
-                url: "logout",
+                url: domain + "logout",
                 success: function (response) {
                     if (response.success) {
                         logout();
@@ -352,7 +399,7 @@ $(function () {
             } else {
                 $.ajax({
                     method: "POST",
-                    url: "signup",
+                    url: domain + "signup",
                     data: data,
                     success: function (response) {
                         if (response.success) {
@@ -364,9 +411,9 @@ $(function () {
                 });
             }
         });
-        $(document).click(function () {
-            $('.list-block-menu')._hide();
-        })
+        // $(document).click(function () {
+        //     $('.list-block-menu')._hide();
+        // })
     }
 
     function loadUsers() {
@@ -395,6 +442,9 @@ $(function () {
         }
         String.prototype.is = function (str) {
             return this.toLowerCase() === str.toLowerCase();
+        }
+        String.prototype.has = function (str) {
+            return this.toLowerCase().indexOf(str.toLowerCase()) > -1;
         }
     }
 
