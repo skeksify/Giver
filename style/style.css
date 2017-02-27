@@ -3,7 +3,6 @@ body {
     color: #e4e4e4;
     font-family: 'Lato', sans-serif;
     background-color: #242121;
-    min-height: 360px;
 }
 
 input{
@@ -205,9 +204,6 @@ h2 {
 .more_btn:hover{
     bottom: 2px;
 }
-
-
-
 
 .main_wrapper{
     width: 100%;

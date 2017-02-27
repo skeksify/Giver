@@ -7,7 +7,7 @@ var updateIntervalInt;
 $(function () {
     var
         isExtension = false,
-        extensionDebug = true,
+        extensionDebug = false,
         domain = (isExtension && !extensionDebug) ? 'https://item-giver.herokuapp.com/' : '',
         usersObj = [],
         currentListType = 'incoming',
@@ -344,6 +344,10 @@ $(function () {
                 success: function (response) {
                     if (response.success) {
                         $list.attr('listType', currentListType).empty();
+                        if (currentListType.is('incoming')) {
+                            init_params.list = response.initParams.list;
+                            updateLSIfExtension();
+                        }
                         loadList(response.initParams.list);
                     } else {
                         console.log(response)
