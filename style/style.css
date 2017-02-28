@@ -5,11 +5,8 @@ body {
     background-color: #242121;
 }
 
-input{
+input, select, textarea{
     outline: none;
-}
-select {
-    width: 120px;
 }
 
 .smallText {
@@ -27,7 +24,7 @@ h2 {
 }
 
 .menu {
-    padding: 4px 0 12px;
+    padding: 4px 0 0px;
     margin: 0 auto;
     text-align: center;
 }
@@ -68,13 +65,16 @@ h2 {
 }
 .remember_me{
     text-align: right;
+    margin-top: 5px;
 }
 .remember_me span{
-        font-size: 12px;
+    font-size: 12px;
     color: #989697;
 }
 .remember_me input{
-
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
 }
 .login-button , .signup-button{
     color: white;
@@ -89,11 +89,12 @@ h2 {
 }
 .error-message{
     color: red;
-    font-size: 13px;
-    margin: 8px 0;
-    font-weight: bolder;
+    font-size: 12px;
+    position: absolute;
+    top: 47px;
 }
 /**/
+
 .give-dialog-wrapper {
     top: 92px;
     left: 50%;
@@ -102,41 +103,86 @@ h2 {
 
 .give-dialog {
     left: -50%;
-    width: 224px;
-    height: 224px;
+    top: 20px;
+    width: 280px;
+    max-height: 265px;
     padding: 10px;
-    background: #222;
+    background: rgba(36, 33, 33, 0.96);
     position: relative;
-    border-radius: 4px;
+    border-radius: 3px;
     border: 1px solid white;
     box-shadow: 4px 6px 8px 0px #090909;
 }
-
-.give-dialog-chunk {
-    margin: 4px;
+.give-dialog > span{
+    text-align: center;
+    display: block;
+    font-size: 18px;
+    margin: 10px 0;
 }
 
+.give-dialog-chunk {
+    margin: 10px 4px;
+    clear: both;
+}
+.give_form_ttl{
+
+}
+.give_form_input{
+    float: right;
+}
 .give-dialog-chunk-wrapper {
-    display: flex;
-    padding: 5px 0;
-    align-items: flex-end;
-    flex-direction: column;
+        width: 80%;
+    margin: 20px auto;
 }
 
 .give-button-wrapper {
-    margin: auto;
-    padding: 10px;
+    position: relative;
 }
-
+.give-button{
+    width: 100%;
+    margin: 20px 0;
+    padding: 5px;
+    background-color: #e4810c;
+    border: none;
+    border-radius: 1px;
+    font-size: 15px;
+    color: #fff;
+}
 .give-dialog-chunk-wrapper .X {
     top: 0;
     right: 0;
     cursor: pointer;
     font-size: 14px;
-    padding: 4px 7px;
     position: absolute;
+    margin: 5px 8px;
+    font-weight: bold;
 }
-
+.give-dialog-chunk input{
+    background: #242121;
+    border: 1px solid #ccc;
+    color: #ccc;
+    width: 120px;
+    border-radius: 1px;
+    padding: 1px 3px;
+}
+.give-dialog-chunk select{
+    border-radius: 1px;
+    background: #242121;
+    border: 1px solid #ccc;
+    color: #ccc;
+    width: 120px;
+}
+.give-dialog-chunk textarea{
+    border-radius: 1px;
+    background: #242121;
+    border: 1px solid #ccc;
+    color: #ccc;
+    width: 120px;
+    padding: 3px;
+    font-size: 12px;
+    resize: none;
+    font-family: 'Lato', sans-serif;
+}
 
 /*Lena's*/
 
@@ -147,11 +193,11 @@ h2 {
     width: calc(100% - 12px);
 }
 .block_left{
-    max-width: 110px;
-    min-width: 110px;
+    margin-right: 10px;
 }
 .link_img{
     width: 100px;
+    max-height: 75px;
     border: 1px solid #fff;
 }
 .link_img img{
@@ -227,6 +273,9 @@ h2 {
     position: relative;
     min-height: 150px;
 }
+.list-block:first-child{
+    margin-top: 5px;
+}
 .sender_info{
     display: inline-block;
     flex-grow: 1;
@@ -276,12 +325,13 @@ h2 {
 }
 .list_tag{
     padding: 2px 5px;
-    border-radius: 15px;
+    border-radius: 2px;
     margin: 2px 2px;
     display: inline-block;
     font-size: 11px;
-    background-color: #fff;
-    color: #242121;
+    background-color: rgb(255, 161, 49);
+    color: #ffffff;
+    font-weight: bold;
 }
 .list_message {
     line-height: 20px;
@@ -366,18 +416,18 @@ background-color: #807e7e;
 }
 
 .menu-list-selector {
-    border: 0;
-    color: #000;
-    width: 133px;
+    border: 1px solid #f0f0f0;
+    width: 30%;
     outline: none;
-    padding: 2px 4px;
-    border-radius: 2px;
+    padding: 5px 5px;
+    border-radius: 1px;
     margin: 23px 0 0 0;
-    background: #ffa131;
+    background: #242121;
+    display: block;
+    color: #f0f0f0;
 }
 
 .gift_detailed {
-    width: calc(100% - 22px);
     margin: 5px;
     display: flex;
     justify-content: space-between;
@@ -385,8 +435,10 @@ background-color: #807e7e;
 
 .sender_all_info{
     flex-grow: 1;
-    max-width: 90px;
+    max-width: 50px;
     margin-right: 10px;
+    max-height: 40px;
+    overflow: hidden;
 }
 
 .sender_all_info img{

@@ -14,7 +14,7 @@
                 <h2>Welcome</h2>
                 <div class="logsign">
                     <span class="menu-show-signup link">Sign Up</span>
-                    <span class="menu-show-login link kita">Login</span>
+                    <span class="menu-show-login link">Login</span>
                 </div>
                 <div class="signup hidden">
                     <input type="text" class="signup-username input_username" placeholder="USERNAME">
@@ -37,56 +37,54 @@
             <div class="logged hidden">
                 <h2>Welcome <span class="username"></span></h2>
                 <span class="menu-give link">Give</span>
-                |
                 <span class="menu-signout link">Sign Out</span>
-                <div>
-                    <select class="menu-list-selector">
-                        <option value="incoming">Incoming</option>
-                        <option value="archived">Archived</option>
-                        <option value="sent">Sent</option>
-                    </select>
-                </div>
+                <select class="menu-list-selector">
+                    <option value="incoming">Incoming</option>
+                    <option value="archived">Archived</option>
+                    <option value="sent">Sent</option>
+                </select>
             </div>
         </div>
         <div class="list"></div>
         <div class="give-dialog-wrapper hidden">
             <div class="give-dialog">
-                Give!
+                <span>Give your friend a gift!</span>
                 <div class="give-dialog-chunk-wrapper">
                     <div class="give-dialog-chunk">
-                        <span>To: </span>
-                            <span>
-                                <select class="give-to"></select>
-                            </span>
+                        <span class="give_form_ttl">To: </span>
+                        <span class="give_form_input">
+                            <select class="give-to"></select>
+                        </span>
                     </div>
                     <div class="give-dialog-chunk">
-                        <span>Tags: </span>
-                        <span><input type="text" class="give-tags smallText"></span>
+                        <span class="give_form_ttl">Link: </span>
+                        <span class="give_form_input"><input type="text" class="give-link"></span>
                     </div>
                     <div class="give-dialog-chunk">
-                        <span>Requires: </span>
-                            <span>
-                                <select class="give-requires">
-                                    <option value="5">Under 5 Minutes</option>
-                                    <option value="10">Under 10 Minutes</option>
-                                    <option value="15">Under 15 Minutes</option>
-                                    <option value="15+">Over 15 Minutes</option>
-                                </select>
-                            </span>
+                        <span class="give_form_ttl">Tags: </span>
+                        <span class="give_form_input"><input type="text" class="give-tags smallText"></span>
                     </div>
                     <div class="give-dialog-chunk">
-                        <span>Message: </span>
-                        <span><input type="text" class="give-message smallText"></span>
+                        <span class="give_form_ttl">Requires: </span>
+                        <span class="give_form_input">
+                            <select class="give-requires">
+                                <option value="5">Under 5 Minutes</option>
+                                <option value="10">Under 10 Minutes</option>
+                                <option value="15">Under 15 Minutes</option>
+                                <option value="15+">Over 15 Minutes</option>
+                            </select>
+                        </span>
                     </div>
                     <div class="give-dialog-chunk">
-                        <span>Link: </span>
-                        <span><input type="text" class="give-link smallText"></span>
+                        <span class="give_form_ttl">Message: </span>
+                        <span class="give_form_input"><textarea class="give-message "></textarea></span>
                     </div>
                     <div class="give-dialog-chunk give-button-wrapper">
                         <button class="give-button">Give</button>
+                        <div class="error-message"></div>
                     </div>
 
-                    <div class="error-message"></div>
+
                     <div class="X">X</div>
                 </div>
             </div>
