@@ -195,7 +195,7 @@ function makeInitParams(req, cb, listSettings) {
 function makeTemplateParams(req, cb) {
     makeInitParams(req, function (o) {
         cb({
-            initParams: JSON.stringify(o).replace(/\'/g, '\\\''),
+            initParams: JSON.stringify(o).replace(/\'/g, '\\\'').replace(/\n/g, '<br/>'),
             session: req.session // Don't send all
         })        
     })
