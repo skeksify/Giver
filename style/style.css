@@ -362,7 +362,7 @@ background-color: #807e7e;
 }
 .extra_menu {
     width: 100px;
-    background: linear-gradient(to right, rgba(208, 204, 204, 0) 3%,rgb(25, 24, 24) 16%);
+    background: linear-gradient(to right, rgba(208, 204, 204, 0) 3%,rgba(36, 33, 33, 0.95) 16%);
     height: calc(100% + 2px);
     position: absolute;
     right: -1px;
@@ -421,7 +421,7 @@ background-color: #807e7e;
     outline: none;
     padding: 5px 5px;
     border-radius: 1px;
-    margin: 23px 0 0 0;
+    margin: 10px auto;
     background: #242121;
     display: block;
     color: #f0f0f0;
