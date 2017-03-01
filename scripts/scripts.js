@@ -52,7 +52,7 @@ $(function () {
         fillWithTags(item.tags, $tagsWrapper);
         $result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
         $result.find('.list-block-requires').text("< " + item.requires);
-        $result.find('.list-block-message').text(item.message);
+        $result.find('.list-block-message').html(item.message);
         if (item.link) {
             $link
                 .text(getTitle(item))
@@ -231,7 +231,7 @@ $(function () {
         loadList(init_params.list);
         loadUsersSelect();
         if (1 || isExtension) {
-            updateIntervalInt = setInterval(updateList, 8000);
+            updateIntervalInt = setInterval(updateList, 3000);
             updateList();
         }
     }
@@ -275,7 +275,6 @@ $(function () {
             method: 'GET',
             url: domain + 'poll' + params,
             success: function (response) {
-                cl('Polled list', response);
                 if (response.constructor === Array && response.length) {
                     init_params.list = init_params.list.concat(response);
                     updateLSIfExtension();
@@ -358,10 +357,14 @@ $(function () {
         $menu.find('.menu-show-signup').click(function () {
             $signup._show();
             $login._hide();
+            $menu.find('.menu-show-signup').addClass('selected');
+            $menu.find('.menu-show-login').removeClass('selected');
         });
         $menu.find('.menu-show-login').click(function () {
             $signup._hide();
             $login._show();
+            $menu.find('.menu-show-login').addClass('selected');
+            $menu.find('.menu-show-signup').removeClass('selected');
         });
         $menu.find('.menu-signout').click(function () {
             $.ajax({
