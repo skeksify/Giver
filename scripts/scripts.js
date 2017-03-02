@@ -11,6 +11,7 @@ $(function () {
         domain = (isExtension && !extensionDebug) ? 'https://item-giver.herokuapp.com/' : '',
         usersObj = [],
         currentListType = 'incoming',
+        $overlay = $('.overlay'),
         $main = $('.main'),
         $signup = $main.find('.signup'),
         $login = $main.find('.login'),
@@ -288,6 +289,11 @@ $(function () {
         });
     }
 
+    function closeGiveDialog() {
+        $give_dialog_wrapper._hide();
+        $overlay._hide();
+    }
+
     function bindEvents() {
         $give_dialog.find('.give-button').click(function () {
             var to = $give_dialog.find('.give-to').val(),
@@ -320,14 +326,14 @@ $(function () {
                 });
             }
         });
-        $give_dialog_wrapper.find('.X').click(function () {
-            $give_dialog_wrapper._hide();
-        })
+        $overlay.click(closeGiveDialog)
+        $give_dialog_wrapper.find('.X').click(closeGiveDialog)
         $menu.find('.menu-give').click(function () {
             $give_dialog_wrapper
                 ._show()
                 .find('input,select').val('');
 
+            $overlay._show();
             // Dev junk data
             // $give_dialog.find('.give-to').val('5881359eac63cb1f603c8929');
             // $give_dialog.find('.give-tags').val((''+Math.random()).substr(2, 7));

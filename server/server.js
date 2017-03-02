@@ -13,6 +13,7 @@ cookieParser = require('cookie-parser');
 eApp.set('port', process.env.PORT || 8888);
 eApp.use('/rj', express.static(upperDir + '/scripts'));
 eApp.use('/rs', express.static(upperDir + '/style'));
+eApp.use('/ri', express.static(upperDir + '/images'));
 
 eApp.use(session({secret: 'Teleki', resave: false, saveUninitialized: true}));
 eApp.set('view engine', 'html');
