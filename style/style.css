@@ -12,15 +12,24 @@ input, select, textarea{
 .smallText {
     width: 120px;
 }
-
+.clear{
+    clear: both;
+}
 h2 {
-    font-size: 40px;
+    font-size: 30px;
     margin: 10px 0;
 }
-
+.logo{
+    width: 100%;
+    height: 155px;
+    overflow: hidden;
+    pointer-events: none;
+}
+.logo img{
+    width:100%;
+}
 .link {
     cursor: pointer;
-    text-decoration: underline;
 }
 
 .menu {
@@ -43,9 +52,17 @@ h2 {
 
 
 /*LOGIN*/
+.logsign{
+    margin-top: -30px;
+}
 .login , .signup{
-    width: 70%;
+    width: 80%;
     margin: 0 auto;
+}
+.logged{
+    position: relative;
+    margin-top: -30px;
+    margin-bottom: 23px;
 }
 .input_username,
 .input_password{
@@ -54,9 +71,9 @@ h2 {
     width: 100%;
     background: none;
     padding: 5px 3px;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid #666666;
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     margin: 0px auto;
     margin-top: 30px;
 }
@@ -77,15 +94,17 @@ h2 {
     height: 14px;
 }
 .login-button , .signup-button{
-    color: #000;
+    color: #e4e4e4;
     cursor: pointer;
     padding: 10px 10px;
     border: none;
     border-radius: 1px;
-    background: rgba(255, 161, 49, 1);
+    background-color: #e4810c;
     width: 100%;
-    margin-top: 20px;
-    font-size: 17px;
+    margin-top: 40px;
+    font-size: 16px;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
 }
 .error-message{
     color: red;
@@ -102,15 +121,16 @@ h2 {
 }
 
 .give-dialog {
-    left: -50%;
     top: 20px;
+    left: -50%;
+    z-index: 2;
     width: 280px;
-    max-height: 265px;
     padding: 10px;
-    background: rgba(36, 33, 33, 0.96);
+    max-height: 315px;
     position: relative;
     border-radius: 3px;
-    border: 1px solid white;
+    border: 1px solid #cccccc;
+    background: rgba(36, 33, 33, 0.96);
     box-shadow: 4px 6px 8px 0px #090909;
 }
 .give-dialog > span{
@@ -121,7 +141,7 @@ h2 {
 }
 
 .give-dialog-chunk {
-    margin: 10px 4px;
+    margin: 20px 4px;
     clear: both;
 }
 .give_form_ttl{
@@ -131,7 +151,7 @@ h2 {
     float: right;
 }
 .give-dialog-chunk-wrapper {
-        width: 80%;
+    width: 90%;
     margin: 20px auto;
 }
 
@@ -146,7 +166,7 @@ h2 {
     border: none;
     border-radius: 1px;
     font-size: 15px;
-    color: #000;
+    color: #ffffff;
 }
 .give-dialog-chunk-wrapper .X {
     top: 0;
@@ -161,24 +181,25 @@ h2 {
     background: #242121;
     border: 1px solid #ccc;
     color: #ccc;
-    width: 120px;
+    width: 140px;
     border-radius: 1px;
-    padding: 1px 3px;
+    padding: 3px 3px;
 }
 .give-dialog-chunk select{
     border-radius: 1px;
     background: #242121;
     border: 1px solid #ccc;
     color: #ccc;
-    width: 120px;
+    width: 140px;
+    padding: 2px;
 }
 .give-dialog-chunk textarea{
     border-radius: 1px;
     background: #242121;
     border: 1px solid #ccc;
     color: #ccc;
-    width: 120px;
-    padding: 3px;
+    width: 140px;
+    padding: 4px;
     font-size: 12px;
     resize: none;
     font-family: 'Lato', sans-serif;
@@ -189,34 +210,35 @@ h2 {
 .gift_basic{
     display: flex;
     justify-content: space-between;
-    padding: 5px;
-    width: calc(100% - 12px);
+    padding: 8px;
+    min-height: 100px;
 }
 .block_left{
     margin-right: 10px;
+    min-width: 100px;
 }
 .link_img{
-    width: 100px;
-    max-height: 75px;
-    border: 1px solid #fff;
+    max-width: 120px;
 }
 .link_img img{
     width: 100%;
-    max-height: 80px;
 }
 .block_link{
     flex-grow: 4;
 }
+.link_btns{
+    display: inline-block;
+    margin-top: 3px;
+}
 .block_link a {
     color: #dedede;
-    font-size: 17px;
+    font-size: 15px;
     line-height: 26px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    max-width: 213px;
 }
 .when_sent{
     flex-grow: 2;
@@ -257,7 +279,7 @@ h2 {
 
 .main {
     width: 400px;
-    margin: 0 auto;
+    margin: 20px auto;
     background-color: #242121;
 
 }
@@ -267,20 +289,33 @@ h2 {
 .list-block{
     width: calc(100% - 2px);
     font-size: 13px;
-    margin: 15px auto;
-    border:1px solid #FEFDF0 ;
-    color: #FEFDF0  ;
+    border: 1px solid #FEFDF0;
+    color: #FEFDF0;
     position: relative;
-    min-height: 150px;
+    /*min-height: 150px;*/
+    margin: 40px auto;
+    border-radius: 2px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
 }
 .list-block:first-child{
-    margin-top: 5px;
+    margin-top: 50px;
 }
 .sender_info{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: -26px;
+    left: -1px;
+    padding: 4px 10px;
+    width: calc(100% - 20px);
+    background: rgb(228, 129, 12);
+    font-size: 15px;
+    border: 1px solid #fff;
+    border-bottom: none;
+}
+.requires{
     display: inline-block;
-    flex-grow: 1;
-    min-width: 80px;
-    max-width: 80px;
 }
 /*sender*/
 
@@ -298,9 +333,15 @@ h2 {
 }
 .list-block-from{
     color: #fff;
-    font-size: 15px;
-    margin-top: 5px;
+    font-weight: bold;
+    margin-right: 2px;
+    text-decoration: underline;
+}
+.list-block-message{
+    font-size: 13px;
+    line-height: 20px;
     display: block;
+    margin-top: -27px;
 }
 .gift_info{
     display: inline-block;
@@ -325,19 +366,17 @@ h2 {
 }
 .list_tag{
     padding: 2px 5px;
-    border-radius: 2px;
+    border-radius: 1px;
     margin: 2px 2px;
     display: inline-block;
     font-size: 11px;
-    background-color: rgb(255, 161, 49);
-    color: #000;
-    font-weight: bold;
+    color: #fff;
+    float: right;
+    letter-spacing: 1px;
+    border: 1px solid #e4810c;
 }
 .list_message {
-    line-height: 20px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    flex-grow:3;
+    flex-grow: 3;
 }
 
 .gift_basic ul, .gift_basic li{
@@ -363,10 +402,10 @@ background-color: #807e7e;
 .extra_menu {
     width: 100px;
     background: linear-gradient(to right, rgba(208, 204, 204, 0) 3%,rgba(36, 33, 33, 0.95) 16%);
-    height: calc(100% + 2px);
+    height: 100%;
     position: absolute;
     right: -1px;
-    top: -1px;
+    top: 1px;
     padding-left: 20px;
     display: flex;
     flex-direction: column;
@@ -376,19 +415,17 @@ background-color: #807e7e;
     font-weight: bold;
     font-size: 13px;
     white-space: nowrap;
-    padding-left: 2px;
-    color: #242121;
     color: #fff;
     flex-direction: row;
     flex: 1;
     line-height: 50px;
+    padding: 0 10px;
     cursor: pointer;
 }
 .menu_item:hover {
-    background: linear-gradient(to right, rgba(0,0,0,0) 90%, rgba(255, 161, 49, 1) 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 55%, rgb(228, 129, 12) 120%);
+    border-left: 1px solid #e4810c;
 }
-
-
 .list-block.unread .list-block-link {
     font-weight: bold;
 }
@@ -417,23 +454,28 @@ background-color: #807e7e;
 
 .menu-list-selector {
     border: 1px solid #f0f0f0;
-    width: 30%;
+    width: 120px;
     outline: none;
     padding: 5px 5px;
     border-radius: 1px;
-    margin: 10px auto;
     background: #242121;
-    display: block;
     color: #f0f0f0;
+    position: absolute;
+    right: 0;
 }
-
+.menu-show-signup,
+.menu-show-login {
+    margin: 0 3px;
+    color: #666;
+}
 .menu-show-signup.selected,
 .menu-show-login.selected {
-    font-weight: bold;
+    color: #e4e4e4;
+    font-size: 16px;
 }
 
 .gift_detailed {
-    margin: 5px;
+    margin: 3px 8px;
     display: flex;
     justify-content: space-between;
 }
@@ -452,6 +494,16 @@ background-color: #807e7e;
 
 .tags_require{
         max-width: 100px;
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10,10,10,0.7);
+    z-index: 1;
 }
 
 .hidden { /* Needs to be last (To override other displays without IMPORTANT) */
