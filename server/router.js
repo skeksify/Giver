@@ -20,7 +20,7 @@ loadIndexFile();
 module.exports = function (eApp) {
     eApp.get('/', function (req, res) {
         loadIndexFile(); // Load every call for DEV, take out (Asynch, might need another refresh)
-        // Not enough cookiez or logged in
+        // Not enough cookies or logged in
         if (req.session.user || !req.cookies.username || !req.cookies.password) {
             makeTemplateParams(req, function (o) {                
                 res.send(compiledHomepage(o));                
@@ -50,6 +50,17 @@ module.exports = function (eApp) {
     eApp.get('/poll', function (req, res) {
         if (req.session.user) {
             poll(req, res);
+        } else if (req.cookies.username && req.cookies.password) {
+            dbApi.autoLogin(req.cookies.username, req.cookies.password, function (o) {
+                if (o) {
+                    req.session.user = o;
+                    makeInitParams(req, function (o) {
+                        res.json({success: true, yup: 'yup', initParams: o });
+                    })
+                } else {
+                    res.json({ success: false, error: 'not-logged-in' });                    
+                }
+            });
         } else {
             res.json({ success: false, error: 'not-logged-in' });
         }
@@ -116,10 +127,17 @@ module.exports = function (eApp) {
         });
     });
 
-    eApp.get( '/logout', function(req, res){
+    eApp.get('/logout', function(req, res){
         req.session.destroy(function(){
             req.session = null;
             res.clearCookie('password');
+            res.json({ success: true });
+        });
+    });
+
+    eApp.get('/silentlogout', function(req, res){
+        req.session.destroy(function(){
+            req.session = null;
             res.json({ success: true });
         });
     });

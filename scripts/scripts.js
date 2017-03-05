@@ -9,7 +9,9 @@ $(function () {
         isExtension = false,
         extensionDebug = false,
         domain = (isExtension && !extensionDebug) ? 'https://item-giver.herokuapp.com/' : '',
+        defaultLogo = 'ri/defaultItem.png',
         usersObj = [],
+        refreshInterval = 5000,
         currentListType = 'incoming',
         $overlay = $('.overlay'),
         $main = $('.main'),
@@ -26,7 +28,7 @@ $(function () {
         init_params = JSON.parse((isExtension ? localStorage.getItem('init_params') : initParamsStr) || '{}'),
         $list_block_template = $($('template.list-block-template').remove().html());
     
-    enhanceJQ();
+    enhancements();
     bindEvents();
 
     if (init_params.isLogged){
@@ -179,7 +181,7 @@ $(function () {
         return (item.metaTags && item.metaTags.title) ? htmlDecode(item.metaTags.title) : item.link;
     }
     function getImage(item) {
-        return (item.metaTags && item.metaTags.og && item.metaTags.og.image) ? item.metaTags.og.image : '';
+        return (item.metaTags && item.metaTags.og && item.metaTags.og.image) ? item.metaTags.og.image : defaultLogo;
     }
     function smartTime(t) {
         var diff = (new Date()).getTime() - (+t),
@@ -232,8 +234,8 @@ $(function () {
         loadList(init_params.list);
         loadUsersSelect();
         if (1 || isExtension) {
-            updateIntervalInt = setInterval(updateList, 3000);
-            updateList();
+            updateIntervalInt = setInterval(poll, refreshInterval);
+            poll();
         }
     }
 
@@ -269,22 +271,27 @@ $(function () {
         }
     }
 
-    function updateList() {
+    function poll() {
         var type = $list.attr('listType'),
             params = type && !type.is('incoming') ? ('?listType=' + type) : '';
         $.ajax({
             method: 'GET',
             url: domain + 'poll' + params,
             success: function (response) {
+                // List, unempty
                 if (response.constructor === Array && response.length) {
                     init_params.list = init_params.list.concat(response);
                     updateLSIfExtension();
                     loadList(response);
-                } else {
-                    if (response.success === false && response.error && response.error.is('not-logged-in')) {
-                        logout();
-                    }
+                    // Auto logged in, new data
+                } else if (response.success && init_params.list.length !== response.initParams.list.length) {
+                    init_params = response.initParams;
+                    login();
+                // Not logged in
+                } else if (response.success === false && response.error && response.error.is('not-logged-in')) {
+                    logout();
                 }
+                // Must be empty list
             }
         });
     }
@@ -437,7 +444,7 @@ $(function () {
         usersObj = result;
     }
 
-    function enhanceJQ() {
+    function enhancements() {
         $.isUn = function (ob) {
             return typeof(ob) === 'undefined';
         }
