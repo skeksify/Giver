@@ -294,7 +294,9 @@ $(function () {
                 // List, unempty
                 if (response.constructor === Array && response.length) {
                     init_params.list = init_params.list.concat(response);
-                    type.is('incoming') && updateLSIfLSSupportOn();
+                    if (type && type.is('incoming')) {
+                        updateLSIfLSSupportOn();
+                    }
                     loadList(response);
                     // Auto logged in, new data
                 } else if (response.success && init_params.list.length !== response.initParams.list.length) {
