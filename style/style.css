@@ -403,7 +403,7 @@ background-color: #807e7e;
     cursor: pointer;
 }
 .extra_menu {
-    width: 100px;
+    width: 120px;
     background: linear-gradient(to right, rgba(208, 204, 204, 0) 3%,rgba(36, 33, 33, 0.95) 16%);
     height: 100%;
     position: absolute;
@@ -426,8 +426,7 @@ background-color: #807e7e;
     cursor: pointer;
 }
 .menu_item:hover {
-    background: linear-gradient(to right, rgba(0,0,0,0) 55%, rgb(228, 129, 12) 120%);
-    border-left: 1px solid #e4810c;
+    border-right: 1px solid #e4810c;
 }
 .list-block.unread .list-block-link {
     font-weight: bold;
