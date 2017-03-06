@@ -508,6 +508,10 @@ background-color: #807e7e;
     z-index: 1;
 }
 
+.see-more {
+    cursor: pointer;
+}
+
 .hidden { /* Needs to be last (To override other displays without IMPORTANT) */
     display: none;
 }

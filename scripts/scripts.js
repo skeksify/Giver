@@ -56,6 +56,7 @@ $(function () {
         $result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
         $result.find('.list-block-requires').text("< " + item.requires);
         $result.find('.list-block-message').html(item.message);
+
         if (item.link) {
             $link
                 .text(getTitle(item))
@@ -197,6 +198,16 @@ $(function () {
 
         $list.prepend(itemsArr.reverse());
 
+        $list.find('.list-block-message').each(function (i, el) {
+            var $el = $(el);
+            if ($el.is(':ellipsised')) {
+                $el.parent().append($('<span/>').addClass('see-more').text('See More').click(function () {
+                    $el.removeClass('ellipsis_tow');
+                    $(this)._hide();
+                }))
+            }
+        })
+
         if (currentListType.is('archived')) {
             $list.find('.list-block-menu-unarchive')._show();
         }
@@ -298,7 +309,7 @@ $(function () {
         } else { // Clear data
             $give_dialog_wrapper.find('input,select').val('');
         }
-        
+
         window.scrollTo(0,0);
 
         $give_dialog_wrapper._show();
@@ -469,6 +480,17 @@ $(function () {
         String.prototype.has = function (str) {
             return this.toLowerCase().indexOf(str.toLowerCase()) > -1;
         }
+        $.expr[':'].ellipsised = function(obj) {
+            var $this = $(obj),
+                $c = $this
+                    .clone()
+                    .css({display: 'inline', width: 'auto', visibility: 'hidden'})
+                    .appendTo('body'),
+                c_width = $c.width();
+            $c.remove();
+
+            return c_width > $this.width();
+        };
     }
 
     function cl() {
