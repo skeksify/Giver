@@ -149,13 +149,13 @@ exports.signup = function (postBody, cb) {
 exports.login = function (username, password, cb) {
     userAccounts.findOne({ username: username }, function (e, o) {
         if (o === null) {
-            tossError('user-not-found', cb);
+            tossError('Invalid Credentials', cb);
         } else {
             validatePassword(password, o.password, function (err, res) {
                 if (res) {
                     cb(null, o);
                 } else {
-                    tossError('invalid-password', cb);
+                    tossError('Invalid Credentials', cb);
                 }
             });
         }

@@ -101,7 +101,7 @@ h2 {
     border-radius: 1px;
     background-color: #e4810c;
     width: 100%;
-    margin-top: 40px;
+    margin-top: 20px;
     font-size: 16px;
     font-family: 'Lato', sans-serif;
     font-weight: bold;
@@ -109,8 +109,8 @@ h2 {
 .error-message{
     color: red;
     font-size: 12px;
-    position: absolute;
-    top: 47px;
+    padding: 20px 0 0;
+    height: 15px;
 }
 /**/
 
@@ -495,7 +495,7 @@ background-color: #807e7e;
 }
 
 .tags_require{
-        max-width: 100px;
+    max-width: 100px;
 }
 
 .overlay {
@@ -511,6 +511,17 @@ background-color: #807e7e;
 .see-more {
     cursor: pointer;
 }
+
+@media only screen and (max-width: 400px)  {
+    .main {
+        width: 95%;
+    }
+    .menu-list-selector {
+        width: 90px;
+    }
+}
+
+
 
 .hidden { /* Needs to be last (To override other displays without IMPORTANT) */
     display: none;

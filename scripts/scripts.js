@@ -6,11 +6,13 @@ var updateIntervalInt;
 
 $(function () {
     var
-        isExtension = false,
-        extensionDebug = false,
-        domain = (isExtension && !extensionDebug) ? 'https://item-giver.herokuapp.com/' : '',
+        LSSupportEnabled = true,
+        useLocalhost = false,
+        enablePolling = true,
+        domain = useLocalhost ? 'http://localhost:8888/' : 'https://item-giver.herokuapp.com/',
         defaultLogo = 'ri/defaultItem.png',
         usersObj = [],
+        isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
         refreshInterval = 5000,
         currentListType = 'incoming',
         $overlay = $('.overlay'),
@@ -25,7 +27,7 @@ $(function () {
         $users_select = $give_dialog.find('.give-to'),
         $signup_error = $signup.find('.error-message'),
         $login_error = $login.find('.error-message'),
-        init_params = JSON.parse((isExtension ? localStorage.getItem('init_params') : initParamsStr) || '{}'),
+        init_params = JSON.parse(window.initParamsStr || localStorage.getItem('init_params') || '{}'),
         $list_block_template = $($('template.list-block-template').remove().html());
     
     enhancements();
@@ -80,14 +82,23 @@ $(function () {
                 $result.find('.list-block-time').text(smartTime(item.timeUnix).str);
             }, timeObj.ref)
         }
-        $result.find('.list-block-menu-opener').hover(function (e) {
-            $('.list-block-menu')._hide();
-            $submenu._show();
-            e.stopPropagation(); // Don't let document.click close it
-        });
-        $result.find('.list-block-menu').hover(noOp, function () {
-            $submenu._hide();
-        })
+
+        if (isMobile) {
+            $result.find('.list-block-menu-opener').click(function (e) {
+                closeAllSubmenus();
+                $submenu._show();
+                e.stopPropagation(); // Don't let document.click close it
+            })
+            $result.find('.list-block-menu').click(closeAllSubmenus);
+        } else {
+            $result.find('.list-block-menu-opener').hover(function (e) {
+                closeAllSubmenus();
+                $submenu._show();
+            });
+            $result.find('.list-block-menu').hover(noOp, function () {
+                $submenu._hide();
+            })
+        }
         $submenu.find('.list-block-menu-archive')
             .addClass('hooked')
             .click(archiveItem.bind($result, item._id, true));
@@ -110,6 +121,10 @@ $(function () {
         // })
 
         return $result;
+    }
+
+    function closeAllSubmenus() {
+        $('.list-block-menu')._hide();
     }
 
     function fillWithTags(tagsStr, $tagsWrapper) {
@@ -218,7 +233,7 @@ $(function () {
         $menu.find('.unlogged')._show();
         $give_dialog_wrapper._hide();
         $list.empty();
-        if (isExtension) {
+        if (LSSupportEnabled) {
             localStorage.setItem("init_params", '');
         }
         updateIntervalInt && (clearInterval(updateIntervalInt) || (updateIntervalInt = 0));
@@ -231,14 +246,14 @@ $(function () {
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
-        if (1 || isExtension) {
+        if (enablePolling) {
             updateIntervalInt = setInterval(poll, refreshInterval);
             poll();
         }
     }
 
     function tryToLogin() {
-        var un = $login.find('.login-username').val(),
+        var un = $login.find('.login-username').val().trim(),
             pss = $login.find('.login-password').val(),
             data = { username: un, password: pss, rm: $login.find('.login-rm').is(':checked') };
 
@@ -253,7 +268,7 @@ $(function () {
                 success: function (response) {
                     if (response.success) {
                         init_params = response.initParams;
-                        updateLSIfExtension();
+                        updateLSIfLSSupportOn();
                         login();
                     } else {
                         $login_error.text(response.error);
@@ -263,8 +278,8 @@ $(function () {
         }
     }
 
-    function updateLSIfExtension() {
-        if (isExtension) {
+    function updateLSIfLSSupportOn() {
+        if (LSSupportEnabled) {
             localStorage.setItem('init_params', JSON.stringify(init_params));
         }
     }
@@ -279,7 +294,7 @@ $(function () {
                 // List, unempty
                 if (response.constructor === Array && response.length) {
                     init_params.list = init_params.list.concat(response);
-                    updateLSIfExtension();
+                    type.is('incoming') && updateLSIfLSSupportOn();
                     loadList(response);
                     // Auto logged in, new data
                 } else if (response.success && init_params.list.length !== response.initParams.list.length) {
@@ -372,7 +387,7 @@ $(function () {
                         $list.attr('listType', currentListType).empty();
                         if (currentListType.is('incoming')) {
                             init_params.list = response.initParams.list;
-                            updateLSIfExtension();
+                            updateLSIfLSSupportOn();
                         }
                         loadList(response.initParams.list);
                     } else {
@@ -445,9 +460,9 @@ $(function () {
                 });
             }
         });
-        // $(document).click(function () {
-        //     $('.list-block-menu')._hide();
-        // })
+        if (isMobile) {
+            $(document).click(closeAllSubmenus);
+        }
     }
 
     function loadUsers() {
