@@ -9,7 +9,7 @@ $(function () {
         LSSupportEnabled = true,
         useLocalhost = false,
         enablePolling = true,
-        domain = useLocalhost ? 'http://localhost:8888/' : 'https://item-giver.herokuapp.com/',
+        domain = useLocalhost ? 'http://localhost:8888/' : window.location.protocol + '//item-giver.herokuapp.com/',
         defaultLogo = 'ri/defaultItem.png',
         usersObj = [],
         isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
