@@ -294,7 +294,7 @@ $(function () {
                 // List, unempty
                 if (response.constructor === Array && response.length) {
                     init_params.list = init_params.list.concat(response);
-                    if (type && type.is('incoming')) {
+                    if (!type || type.is('incoming')) {
                         updateLSIfLSSupportOn();
                     }
                     loadList(response);
