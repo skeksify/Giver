@@ -101,7 +101,7 @@ $(function () {
             .click(unreadItem.bind($result, item._id, true));
         $submenu.find('.list-block-menu-forward')
             .addClass('hooked')
-            .click(forwardItem.bind($result, item));
+            .click(openGiveDialog.bind($result, item));
 
         // $result.hover(function () {
         //     $list.find('.gift_detailed')._hide();
@@ -130,19 +130,6 @@ $(function () {
         var el = document.createElement("div");
         el.innerHTML = str;
         return el.innerText;
-    }
-    
-    function forwardItem(item) {
-        var key, classesToValues = {
-            '.give-tags': item.tags,
-            '.give-requires': item.requires,
-            '.give-message': item.message,
-            '.give-link': item.link
-        }
-        for (key in classesToValues) {
-            $give_dialog.find(key).val(classesToValues[key]);
-        }
-        $give_dialog_wrapper._show();
     }
 
     function unreadItem(id, markAsRead) {
@@ -296,6 +283,32 @@ $(function () {
         });
     }
 
+    function openGiveDialog(item) {
+        var key, classesToValues;
+        if (item) { // Load data
+            classesToValues = {
+                '.give-tags': item.tags,
+                '.give-requires': item.requires,
+                '.give-message': item.message,
+                '.give-link': item.link
+            }
+            for (key in classesToValues) {
+                $give_dialog.find(key).val(classesToValues[key]);
+            }
+        } else { // Clear data
+            $give_dialog_wrapper.find('input,select').val('');
+        }
+        
+        window.scrollTo(0,0);
+
+        $give_dialog_wrapper._show();
+        $overlay._show();
+        // Dev junk data
+        // $give_dialog.find('.give-to').val('5881359eac63cb1f603c8929');
+        // $give_dialog.find('.give-tags').val((''+Math.random()).substr(2, 7));
+        // $give_dialog.find('.give-requires').val(10);
+        // $give_dialog.find('.give-message').val((''+Math.random()).substr(2, 7));
+    }
     function closeGiveDialog() {
         $give_dialog_wrapper._hide();
         $overlay._hide();
@@ -325,9 +338,10 @@ $(function () {
                     data: data,
                     success: function (response) {
                         if (response.success) {
-                            $give_dialog_wrapper._hide();
+                            closeGiveDialog();
                         } else {
                             $give_error.text('eRRRor');
+                            console.log(response);
                         }
                     }
                 });
@@ -335,18 +349,7 @@ $(function () {
         });
         $overlay.click(closeGiveDialog)
         $give_dialog_wrapper.find('.X').click(closeGiveDialog)
-        $menu.find('.menu-give').click(function () {
-            $give_dialog_wrapper
-                ._show()
-                .find('input,select').val('');
-
-            $overlay._show();
-            // Dev junk data
-            // $give_dialog.find('.give-to').val('5881359eac63cb1f603c8929');
-            // $give_dialog.find('.give-tags').val((''+Math.random()).substr(2, 7));
-            // $give_dialog.find('.give-requires').val(10);
-            // $give_dialog.find('.give-message').val((''+Math.random()).substr(2, 7));
-        });
+        $menu.find('.menu-give').click(openGiveDialog);
         $menu.find('.menu-list-selector').change(function () {
             currentListType = $(this).val();
             $.ajax({
