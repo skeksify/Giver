@@ -25,7 +25,6 @@
                     <input type="password" class="signup-password input_password" placeholder="PASSWORD">
                     <input type="password" class="signup-password2 input_password" placeholder="PASSWORD CONFIRMATION">
                     <button class="signup-button">SIGN UP</button>
-                    <div class="error-message"></div>
                 </div>
                 <div class="login">
                     <input type="text" class="login-username input_username" placeholder="USERNAME" autofocus>
@@ -37,6 +36,7 @@
                     <div class="error-message"></div>
                     <button class="login-button">LOG IN</button>
                 </div>
+                <div class="signup-error-message"></div>
             </div>
             <div class="logged hidden">
                 <!--<span class="username"></span>-->
@@ -53,6 +53,7 @@
             </div>
         </div>
         <div class="list clear"></div>
+        <div class="empty-list hidden">List is empty!</div>
         <div class="give-dialog-wrapper hidden">
             <div class="give-dialog">
                 <span>Give your friend a gift!</span>
@@ -90,8 +91,6 @@
                         <button class="give-button">Give</button>
                         <div class="error-message"></div>
                     </div>
-
-
                     <div class="X">X</div>
                 </div>
             </div>
@@ -100,8 +99,8 @@
             <div class="list-block">
                 <div class="sender_info">
                     <div class="from">
-                        Given by
-                        <span class="list-block-from"></span>
+                        <span class="list-block-toFrom-title">Given by</span>
+                        <span class="list-block-toFrom"></span>
                         <span class="list-block-time"></span>
                     </div>
 

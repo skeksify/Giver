@@ -196,6 +196,7 @@ function makeInitParams(req, cb, listSettings) {
 
     if (initParams.isLogged) {
         initParams.username = req.session.user.username;
+        initParams.userId = req.session.user._id;
         listSettings && (initParams.listType = listSettings.listType);
         dbApi.getList(req.session.user._id, function (queriedList) {
             usersLastServedItem[req.session.user._id] = getLastEntry(queriedList);

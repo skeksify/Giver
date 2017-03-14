@@ -21,11 +21,13 @@ $(function () {
         $login = $main.find('.login'),
         $menu = $main.find('.menu'),
         $list = $main.find('.list'),
+        $emptyList = $main.find('.empty-list'),
+        $menuListSelector = $menu.find('.menu-list-selector'),
         $give_dialog_wrapper = $main.find('.give-dialog-wrapper'),
         $give_dialog = $give_dialog_wrapper.find('.give-dialog'),
         $give_error = $give_dialog_wrapper.find('.error-message'),
         $users_select = $give_dialog.find('.give-to'),
-        $signup_error = $signup.find('.error-message'),
+        $signup_error = $main.find('.signup-error-message'),
         $login_error = $login.find('.error-message'),
         init_params = JSON.parse(window.initParamsStr || localStorage.getItem('init_params') || '{}'),
         $list_block_template = $($('template.list-block-template').remove().html());
@@ -42,7 +44,9 @@ $(function () {
     function loadUsersSelect() {
         $users_select.html('<option value="">Pick</option>');
         for (var key in usersObj) {
-            $users_select.append($('<option/>').val(key).text(usersObj[key]));
+            if (key !== init_params.userId || key.is('5887b48fc398a21228b3bc16')) {
+                $users_select.append($('<option/>').val(key).text(usersObj[key]));
+            }
         }
     }
 
@@ -55,7 +59,13 @@ $(function () {
             $tagsWrapper = $result.find('.list-block-tags-wrapper');
 
         fillWithTags(item.tags, $tagsWrapper);
-        $result.find('.list-block-from').text(usersObj[item.sender[0]._id]);
+        if (currentListType.is('sent')) {
+            $result.find('.list-block-toFrom-title').text('Given to');
+            $result.find('.list-block-toFrom').text(usersObj[item.to]);
+        } else {
+            $result.find('.list-block-toFrom').text(usersObj[item.from]);
+        }
+
         $result.find('.list-block-requires').text("< " + item.requires);
         $result.find('.list-block-message').html(item.message);
 
@@ -204,27 +214,33 @@ $(function () {
         return result;
     }
 
-    function loadList(list) {
+    function loadList(list, isIncomplete) {
         var i, itemsArr = [];
 
-        for (i=0; i<list.length; i++) {
-            itemsArr.push(makeBlock(list[i]));
-        }
-
-        $list.prepend(itemsArr.reverse());
-
-        $list.find('.list-block-message').each(function (i, el) {
-            var $el = $(el);
-            if ($el.is(':ellipsised')) {
-                $el.parent().append($('<span/>').addClass('see-more').text('See More').click(function () {
-                    $el.removeClass('ellipsis_tow');
-                    $(this)._hide();
-                }))
+        if (list.length) {
+            $emptyList._hide();
+            for (i = 0; i < list.length; i++) {
+                itemsArr.push(makeBlock(list[i]));
             }
-        })
 
-        if (currentListType.is('archived')) {
-            $list.find('.list-block-menu-unarchive')._show();
+            $list.prepend(itemsArr.reverse());
+
+            $list.find('.list-block-message').each(function (i, el) {
+                var $el = $(el);
+                if ($el.is(':ellipsised') && $el.text().length > 160) {
+                    $el.parent().find('.see-more').remove();
+                    $el.parent().append($('<span/>').addClass('see-more').text('See More').click(function () {
+                        $el.removeClass('ellipsis_tow');
+                        $(this)._hide();
+                    }))
+                }
+            })
+
+            if (currentListType.is('archived')) {
+                $list.find('.list-block-menu-unarchive')._show();
+            }
+        } else if (!isIncomplete) { // Empty list and not polling
+            $emptyList._show();
         }
     }
 
@@ -243,6 +259,11 @@ $(function () {
         $menu.find('.unlogged')._hide();
         $menu.find('.logged')._show()
             .find('.username').text(init_params.username);
+        currentListType = 'incoming';
+        $menuListSelector.val(currentListType);
+        $list.attr('listType', currentListType);
+        $login.find('.login-username').val('');
+        $login.find('.login-password').val('');
         loadUsers();
         loadList(init_params.list);
         loadUsersSelect();
@@ -297,7 +318,7 @@ $(function () {
                     if (!type || type.is('incoming')) {
                         updateLSIfLSSupportOn();
                     }
-                    loadList(response);
+                    loadList(response, true);
                     // Auto logged in, new data
                 } else if (response.success && init_params.list.length !== response.initParams.list.length) {
                     init_params = response.initParams;
@@ -309,6 +330,13 @@ $(function () {
                 // Must be empty list
             }
         });
+    }
+
+    function showLogin() {
+        $signup._hide();
+        $login._show();
+        $menu.find('.menu-show-login').addClass('selected');
+        $menu.find('.menu-show-signup').removeClass('selected');
     }
 
     function openGiveDialog(item) {
@@ -329,6 +357,7 @@ $(function () {
 
         window.scrollTo(0,0);
 
+        $users_select.val('')
         $give_dialog_wrapper._show();
         $overlay._show();
         // Dev junk data
@@ -378,7 +407,7 @@ $(function () {
         $overlay.click(closeGiveDialog)
         $give_dialog_wrapper.find('.X').click(closeGiveDialog)
         $menu.find('.menu-give').click(openGiveDialog);
-        $menu.find('.menu-list-selector').change(function () {
+        $menuListSelector.change(function () {
             currentListType = $(this).val();
             $.ajax({
                 method: 'GET',
@@ -404,12 +433,7 @@ $(function () {
             $menu.find('.menu-show-signup').addClass('selected');
             $menu.find('.menu-show-login').removeClass('selected');
         });
-        $menu.find('.menu-show-login').click(function () {
-            $signup._hide();
-            $login._show();
-            $menu.find('.menu-show-login').addClass('selected');
-            $menu.find('.menu-show-signup').removeClass('selected');
-        });
+        $menu.find('.menu-show-login').click(showLogin);
         $menu.find('.menu-signout').click(function () {
             $.ajax({
                 method: "GET",
@@ -455,6 +479,14 @@ $(function () {
                     success: function (response) {
                         if (response.success) {
                             $signup_error.text('Sign up success!');
+                            $signup.find('.signup-username').val('');
+                            $signup.find('.signup-password').val('');
+                            $signup.find('.signup-password2').val('');
+                            $login.find('.login-username').val(un);
+                            showLogin();
+                            setTimeout(function () {
+                                $signup_error.fadeOut(200);
+                            }, 3000)
                         } else {
                             $signup_error.text(response.error);
                         }

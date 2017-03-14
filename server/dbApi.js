@@ -71,7 +71,7 @@ exports.getList = function (ownerId, cb, afterTime, listSettings) {
     var match = {
         'to': makeId(ownerId),
         'archived': { '$ne': true } // Not true
-    }
+    };
     
     if (afterTime) {
         match.timeUnix = { '$gt': afterTime };
@@ -93,15 +93,9 @@ exports.getList = function (ownerId, cb, afterTime, listSettings) {
     givenItems.aggregate([
         { $match: match },
         { $sort : { timeUnix: 1 } },
-        {
-            $lookup: {
-                from: "userAccounts",
-                localField: "from",
-                foreignField: "_id",
-                as: "sender"
-            }
-        },
         { $project: {
+            "to": 1,
+            "from": 1,
             "message": 1,
             "requires": 1,
             "tags": 1,
@@ -109,7 +103,6 @@ exports.getList = function (ownerId, cb, afterTime, listSettings) {
             "time": 1,
             "read": 1,
             "timeUnix": 1,
-            "sender._id": 1,
             "metaTags.title": 1,
             "metaTags.og.image": 1
         }}
@@ -147,7 +140,7 @@ exports.signup = function (postBody, cb) {
 }
 
 exports.login = function (username, password, cb) {
-    userAccounts.findOne({ username: username }, function (e, o) {
+    userAccounts.findOne({ username: new RegExp('^' + username.toLowerCase() + '$', 'i') }, function (e, o) {
         if (o === null) {
             tossError('Invalid Credentials', cb);
         } else {

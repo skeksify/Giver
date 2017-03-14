@@ -16,6 +16,10 @@ input, select, textarea{
 .clear{
     clear: both;
 }
+.empty-list {
+    text-align: center;
+    padding: 20px;
+}
 h2 {
     font-size: 30px;
     margin: 10px 0;
@@ -107,7 +111,8 @@ h2 {
     font-family: 'Lato', sans-serif;
     font-weight: bold;
 }
-.error-message{
+.error-message,
+.signup-error-message {
     color: red;
     font-size: 12px;
     padding: 20px 0 0;
@@ -329,7 +334,7 @@ h2 {
 .sender_img img{
     width: 100%;
 }
-.list-block-from{
+.list-block-toFrom {
     color: #fff;
     font-weight: bold;
 }
